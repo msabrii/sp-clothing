@@ -1,4 +1,4 @@
-import { GraphQLClient } from 'graphql-request';
+import { gql, GraphQLClient } from 'graphql-request';
 // import * as Fragments from 'queries/fragments';
 import compress from 'graphql-query-compress/lib/graphql-query-compress.browser.js';
 
@@ -16,5 +16,32 @@ export default class ContentfulApi {
 		} catch (error) {
 			throw new Error('Could not fetch data from Contentful');
 		}
+	}
+
+	static async getAllProducts() {
+		const query = gql`
+			query {
+				productCollection(preview: false) {
+					items {
+						sys {
+							id
+						}
+						name
+						description
+						imageCollection(preview: false) {
+							items {
+								title
+								description
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { productCollection } = await this.callContentful(query);
+
+		return productCollection.items;
 	}
 }
