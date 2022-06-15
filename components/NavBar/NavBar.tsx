@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import NavItem from './NavItem/NavItem';
 
 const NavBar = () => {
 	return (
@@ -7,13 +8,9 @@ const NavBar = () => {
 				<Link href="/">
 					<h1>SP</h1>
 				</Link>
-				<ul className="flex flex-row text-white">
-					<Link href="/">
-						<li className="ml-4 cursor-pointer transition-colors">Home</li>
-					</Link>
-					<Link href="/products">
-						<li className="ml-4 cursor-pointer transition-colors">Products</li>
-					</Link>
+				<ul className="flex flex-row text-white relative">
+					<NavItem name="Home" link="/" />
+					<NavItem name="Products" link="/products" />
 				</ul>
 			</div>
 		</nav>
