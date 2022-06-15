@@ -13,7 +13,7 @@ interface ICardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDi
 }
 
 const Card: React.FC<ICardProps> = (props) => {
-	const { backgroundColor, color, style, url, img, title } = props;
+	const { backgroundColor, color, style, url, img, title, description } = props;
 	let _style: React.CSSProperties = style || {};
 
 	const router = useRouter();
@@ -33,9 +33,10 @@ const Card: React.FC<ICardProps> = (props) => {
 	if (color) _style.color = color;
 
 	return (
-		<div tabIndex={0} role="button" onKeyDown={handleOnKeyDown} onClick={handleClick} style={_style} {...props}>
+		<div className="inline-block text-center relative hover:-translate-y-1 transition-transform" tabIndex={0} role="button" onKeyDown={handleOnKeyDown} onClick={handleClick} style={_style} {...props}>
 			{img && <img src={img.url} alt={img.description} width="200px" height={'200px'} />}
-			{title && <h2>{title}</h2>}
+			{title && <h2 className="font-semibold text-lg">{title}</h2>}
+			{description && <p className="before:content-[''] before:w-full before:h-[1px] before:left-0 before:bg-black before:opacity-40 before:absolute">{description}</p>}
 		</div>
 	);
 };
