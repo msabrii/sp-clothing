@@ -34,8 +34,7 @@ const Card: React.FC<ICardProps> = (props) => {
 
 	return (
 		<div className="inline-block text-center relative hover:-translate-y-1 transition-transform" tabIndex={0} role="button" onKeyDown={handleOnKeyDown} onClick={handleClick} style={_style} {...props}>
-			{img && <Image src={img.url} alt={img.description} width="200px" height="200px" />}
-			{/* {img && <img src={img.url} alt={img.description} width="200px" height={'200px'} />} */}
+			{img && <Image src={img.url} alt={img.description} layout="fixed" objectFit="cover" loading="eager" height="300px" width="200px" />}
 			{title && <h2 className="font-semibold text-lg">{title}</h2>}
 			{description && <p className="before:content-[''] before:w-full before:h-[1px] before:left-0 before:bg-black before:opacity-40 before:absolute">{description}</p>}
 		</div>
