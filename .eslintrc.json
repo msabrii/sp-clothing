@@ -1,7 +1,19 @@
 {
 	"plugins": ["jsx-a11y", "tailwindcss"],
-	"extends": ["next/core-web-vitals", "plugin:jsx-a11y/recommended"],
-	"rules": {
-		"react-hooks/exhaustive-deps": 0
-	}
+	"extends": ["next", "next/core-web-vitals", "plugin:jsx-a11y/recommended", "eslint:recommended"],
+	"globals": {
+		"React": "readonly"
+	  },
+	  "overrides": [
+		{
+		  "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
+		  "rules": {
+			// example of overriding a rule
+			"storybook/hierarchy-separator": "error"
+		  }
+		}
+	  ],
+	  "rules": {
+		"no-unused-vars": [1, { "args": "after-used", "argsIgnorePattern": "^_" }]
+	  }
 }
