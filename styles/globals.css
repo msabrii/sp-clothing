@@ -17,3 +17,51 @@ a {
 * {
 	box-sizing: border-box;
 }
+
+@layer base {
+	h1 {
+		font-size: 39.06px;
+		font-weight: 600;
+		/* font-family: "Poppins", sans-serif; */
+	}
+	h2 {
+		font-size: 31.25px;
+		/* font-family: "Poppins", sans-serif; */
+	}
+	h3 {
+		font-size: 25px;
+		/* font-family: "Poppins", sans-serif; */
+	}
+	h4 {
+		font-size: 20px;
+		/* font-family: "Poppins", sans-serif; */
+	}
+	@screen lg {
+		h1 {
+			font-size: 48.83px;
+			font-weight: 600;
+			/* font-family: "Poppins", sans-serif; */
+		}
+		h2 {
+			font-size: 39.06px;
+			/* font-family: "Poppins", sans-serif; */
+		}
+		h3 {
+			font-size: 31.25px;
+			/* font-family: "Poppins", sans-serif; */
+		}
+		h4 {
+			font-size: 20px;
+			/* font-family: "Poppins", sans-serif; */
+		}
+	}
+}
+
+@layer components {
+	.wrapper {
+		@apply xs:max-w-screen-xs sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl 2xl:max-w-screen-2xl my-0 mx-auto;
+	}
+	.routesWrapper {
+		@apply mt-4 wrapper flex grow shrink-0 basis-auto h-full w-full 2xl:mt-8 lg:mt-8;
+	}
+}
