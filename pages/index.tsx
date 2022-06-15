@@ -1,32 +1,8 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Card from '../components/Card/Card';
 import styles from '../styles/Home.module.css';
-import ContentfulApi from '../utils/ContentfulApi';
 
-interface Props {
-	products: any;
-}
-
-export interface ImageObject {
-	title: string;
-	description: string;
-	url: string;
-}
-
-interface ProductData {
-	description: string;
-	name: string;
-	imageCollection: imageCollectionData;
-}
-
-interface imageCollectionData {
-	items: ImageObject[];
-}
-
-const Home: React.FC<Props> = ({ products }) => {
-	console.log(products);
+const Home: React.FC = () => {
 	return (
 		<div className={styles.container}>
 			<Head>
@@ -36,10 +12,7 @@ const Home: React.FC<Props> = ({ products }) => {
 			</Head>
 
 			<main>
-				<h1>Products</h1>
-				{products.map((product: any) => (
-					<Card title={product.name} url="/" key={product.sys.id} img={product.imageCollection.items[0]} description={product.description} />
-				))}
+				<h1>Home</h1>
 			</main>
 
 			<footer className={styles.footer}>
@@ -55,17 +28,3 @@ const Home: React.FC<Props> = ({ products }) => {
 };
 
 export default Home;
-
-export async function getStaticProps({ params: any, preview = false }) {
-	const products = await ContentfulApi.getAllProducts();
-
-	// Add this with fallback: "blocking"
-	// So that if we do not have a post on production,
-	// the 404 is served
-	if (!products) {
-		return {
-			notFound: true
-		};
-	}
-	return { props: { products } };
-}
