@@ -47,9 +47,8 @@ export default class ContentfulApi {
 	}
 
 	static async getProductBySlug(slug: string) {
-		console.log(slug);
 		const query = gql`
-			query {
+			query getProductBySlug($slug: String) {
 				productCollection(where: { slug: $slug }, limit: 1) {
 					items {
 						sys {
@@ -71,6 +70,6 @@ export default class ContentfulApi {
 
 		const { productCollection } = await this.callContentful(query);
 
-		return productCollection.items;
+		return productCollection.items[0];
 	}
 }

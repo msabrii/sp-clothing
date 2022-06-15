@@ -13,7 +13,7 @@ export interface ImageObject {
 	url: string;
 }
 
-interface ProductData {
+export interface ProductData {
 	description: string;
 	name: string;
 	slug: string;
@@ -47,7 +47,6 @@ export default Products;
 
 export async function getStaticProps() {
 	const products = await ContentfulApi.getAllProducts();
-
 	// Add this with fallback: "blocking"
 	// So that if we do not have a post on production,
 	// the 404 is served
