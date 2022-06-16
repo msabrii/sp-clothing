@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const product = await ContentfulApi.getProductBySlug(params!.slug![0]);
 
 	// Add this with fallback: "blocking"
-	// So that if we do not have a post on production,
+	// So that if we do not have a product on production,
 	// the 404 is served
 	if (!product) {
 		return {
