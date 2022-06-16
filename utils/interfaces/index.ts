@@ -16,3 +16,9 @@ export interface SEO {
 	};
 	canonicalUrl?: string;
 }
+
+export interface Page {
+	name: string;
+	slug: string;
+	seo: SEO;
+}

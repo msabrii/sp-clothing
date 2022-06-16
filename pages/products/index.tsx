@@ -2,14 +2,10 @@ import { FC } from 'react';
 import Card from '../../components/Card/Card';
 import Layout from '../../components/Layout/Layout';
 import ContentfulApi from '../../utils/ContentfulApi';
-import { imageCollectionData, SEO } from '../../utils/interfaces';
+import { imageCollectionData, Page, SEO } from '../../utils/interfaces';
 
 interface Props {
-	productPage: {
-		name: string;
-		slug: string;
-		seo: SEO;
-	};
+	productPage: Page;
 	products: ProductData[];
 }
 
