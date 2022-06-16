@@ -3,18 +3,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import meta from '../../meta.config';
+import { SEO } from '../../utils/interfaces';
 import NavBar from '../NavBar/NavBar';
 
 const Layout: React.FC<{
 	children: React.ReactNode;
-	seo: {
-		metaTitle: string;
-		metaDescription: string;
-		metaImage: {
-			url: string;
-		};
-		canonicalUrl: string;
-	};
+	seo: SEO;
 }> = ({ children, seo }) => {
 	const router = useRouter();
 	let pageUrl = seo?.canonicalUrl ? seo.canonicalUrl : router.asPath;

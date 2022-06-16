@@ -2,27 +2,15 @@ import { FC } from 'react';
 import Card from '../../components/Card/Card';
 import Layout from '../../components/Layout/Layout';
 import ContentfulApi from '../../utils/ContentfulApi';
+import { imageCollectionData, SEO } from '../../utils/interfaces';
 
 interface Props {
 	productPage: {
 		name: string;
 		slug: string;
-		seo: {
-			metaTitle: string;
-			metaDescription: string;
-			metaImage: {
-				url: string;
-			};
-			canonicalUrl: string;
-		};
+		seo: SEO;
 	};
 	products: ProductData[];
-}
-
-export interface ImageObject {
-	title: string;
-	description: string;
-	url: string;
 }
 
 export interface ProductData {
@@ -30,18 +18,7 @@ export interface ProductData {
 	name: string;
 	slug: string;
 	imageCollection: imageCollectionData;
-	seo: {
-		metaTitle: string;
-		metaDescription: string;
-		metaImage: {
-			url: string;
-		};
-		canonicalUrl: string;
-	};
-}
-
-interface imageCollectionData {
-	items: ImageObject[];
+	seo: SEO;
 }
 
 const Products: FC<Props> = ({ productPage, products }) => {

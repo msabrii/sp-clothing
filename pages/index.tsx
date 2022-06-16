@@ -9,9 +9,9 @@ interface IHomeProps {
 	};
 }
 
-const Home: React.FC<IHomeProps> = ({ seo }) => {
+const Home: React.FC<IHomeProps> = () => {
 	return (
-		<Layout seo={{ title: 'mango', description: 'PEACH' }}>
+		<Layout seo={{ metaTitle: 'SP', metaDescription: 'SP Home Page' }}>
 			<div className={styles.container}>
 				<main>
 					<h1>Home</h1>
