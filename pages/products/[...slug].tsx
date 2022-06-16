@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { FC } from 'react';
 import Layout from '../../components/Layout/Layout';
 import ContentfulApi from '../../utils/ContentfulApi';
@@ -11,13 +10,13 @@ interface IProductDetails {
 }
 
 const ProductDetails: FC<IProductDetails> = ({ product }) => {
-	const router = useRouter();
-	const slug = router.query.slug || [];
+	// const router = useRouter();
+	// const slug = router.query.slug || [];
 
-	console.log(product);
+	// console.log(product);
 
 	return (
-		<Layout seo={{ title: product.name, description: product.description }}>
+		<Layout seo={product.seo}>
 			<h1>{product.name}</h1>
 			<Image src={product.imageCollection.items[0].url} alt={product.imageCollection.items[0].description} layout="fixed" objectFit="cover" loading="eager" height="500px" width="400px" />
 		</Layout>

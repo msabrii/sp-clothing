@@ -56,6 +56,14 @@ export default class ContentfulApi {
 						}
 						name
 						description
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
 						imageCollection(preview: false) {
 							items {
 								title
@@ -73,5 +81,32 @@ export default class ContentfulApi {
 		});
 
 		return productCollection.items[0];
+	}
+
+	static async getPageBySlug(slug: string) {
+		const query = gql`
+			query getPageBySlug($slug: String) {
+				pageCollection(where: { slug: $slug }, limit: 1) {
+					items {
+						name
+						slug
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { pageCollection } = await this.callContentful(query, {
+			slug: slug,
+		});
+
+		return pageCollection.items[0];
 	}
 }

@@ -5,7 +5,17 @@ import React from 'react';
 import meta from '../../meta.config';
 import NavBar from '../NavBar/NavBar';
 
-const Layout: React.FC<{ children: React.ReactNode; seo?: any }> = ({ children, seo }) => {
+const Layout: React.FC<{
+	children: React.ReactNode;
+	seo: {
+		metaTitle: string;
+		metaDescription: string;
+		metaImage: {
+			url: string;
+		};
+		canonicalUrl: string;
+	};
+}> = ({ children, seo }) => {
 	const router = useRouter();
 	let pageUrl = seo?.canonicalUrl ? seo.canonicalUrl : router.asPath;
 	pageUrl = pageUrl.replace(/\/?$/, '/');
@@ -18,11 +28,12 @@ const Layout: React.FC<{ children: React.ReactNode; seo?: any }> = ({ children, 
 					<meta property="og:site_name" content={meta.openGraph.site_name} />
 					<meta property="og:locale" content="en-GB" />
 					<meta property="og:type" content="website" />
-					<title>{seo.title || meta.title}</title>
-					<meta content={seo.description || meta.description} name="description" />
-					<meta property="og:title" content={seo.title || `${meta.title} | SP-Clothing`} />
-					<meta property="og:description" content={seo.description || meta.description} />
+					<title>{seo.metaTitle || meta.title}</title>
+					<meta content={seo.metaDescription || meta.description} name="description" />
+					<meta property="og:title" content={seo.metaTitle || `${meta.title} | SP-Clothing`} />
+					<meta property="og:description" content={seo.metaDescription || meta.description} />
 					<meta property="og:url" content={canonicalUrl} />
+					<meta property="og:image" content={seo.metaImage?.url} />
 					<link rel="canonical" href={canonicalUrl} />
 					{/* {seo.openGraphCollection &&
 						seo.openGraphCollection.items.map((item, index) => {

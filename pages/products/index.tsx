@@ -4,6 +4,18 @@ import Layout from '../../components/Layout/Layout';
 import ContentfulApi from '../../utils/ContentfulApi';
 
 interface Props {
+	productPage: {
+		name: string;
+		slug: string;
+		seo: {
+			metaTitle: string;
+			metaDescription: string;
+			metaImage: {
+				url: string;
+			};
+			canonicalUrl: string;
+		};
+	};
 	products: ProductData[];
 }
 
@@ -18,16 +30,24 @@ export interface ProductData {
 	name: string;
 	slug: string;
 	imageCollection: imageCollectionData;
+	seo: {
+		metaTitle: string;
+		metaDescription: string;
+		metaImage: {
+			url: string;
+		};
+		canonicalUrl: string;
+	};
 }
 
 interface imageCollectionData {
 	items: ImageObject[];
 }
 
-const Products: FC<Props> = ({ products }) => {
+const Products: FC<Props> = ({ productPage, products }) => {
 	console.log(products);
 	return (
-		<Layout>
+		<Layout seo={productPage.seo}>
 			<main>
 				<h1>Products</h1>
 				{products.map((product: any) => (
@@ -41,14 +61,15 @@ const Products: FC<Props> = ({ products }) => {
 export default Products;
 
 export async function getStaticProps() {
+	const productPage = await ContentfulApi.getPageBySlug('products');
 	const products = await ContentfulApi.getAllProducts();
 	// Add this with fallback: "blocking"
 	// So that if we do not have a post on production,
 	// the 404 is served
-	if (!products) {
+	if (!products || !productPage) {
 		return {
 			notFound: true,
 		};
 	}
-	return { props: { products } };
+	return { props: { productPage, products } };
 }
