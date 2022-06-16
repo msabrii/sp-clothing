@@ -41,5 +41,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const productsCollection = await ContentfulApi.getAllProducts();
-	return { paths: productsCollection?.map(({ slug }) => `/products/${slug}`) ?? [], fallback: false };
+	return { paths: productsCollection?.map((product: { slug: string }) => `/products/${product.slug}`) ?? [], fallback: false };
 };

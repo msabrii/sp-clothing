@@ -46,6 +46,34 @@ export default class ContentfulApi {
 		return productCollection.items;
 	}
 
+	static async getNewProducts() {
+		const query = gql`
+			query {
+				productCollection(limit: 6, order: sys_publishedAt_DESC) {
+					items {
+						sys {
+							id
+						}
+						name
+						description
+						slug
+						imageCollection(preview: false) {
+							items {
+								title
+								description
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { productCollection } = await this.callContentful(query);
+
+		return productCollection.items;
+	}
+
 	static async getProductBySlug(slug: string) {
 		const query = gql`
 			query getProductBySlug($slug: String) {
@@ -108,5 +136,30 @@ export default class ContentfulApi {
 		});
 
 		return pageCollection.items[0];
+	}
+
+	static async getAllPages() {
+		const query = gql`
+			query {
+				pageCollection(preview: false) {
+					items {
+						name
+						slug
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { pageCollection } = await this.callContentful(query);
+
+		return pageCollection.items;
 	}
 }
