@@ -9,7 +9,7 @@ const Layout: React.FC<{ children: React.ReactNode; seo?: any }> = ({ children, 
 	const router = useRouter();
 	let pageUrl = seo?.canonicalUrl ? seo.canonicalUrl : router.asPath;
 	pageUrl = pageUrl.replace(/\/?$/, '/');
-	const canonicalUrl = `${'https://sp-clothing.com'}${pageUrl}`;
+	const canonicalUrl = `https://sp-clothing.com${pageUrl}`;
 	return (
 		<>
 			{seo && (

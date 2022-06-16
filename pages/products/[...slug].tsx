@@ -1,6 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import Layout from '../../components/Layout/Layout';
 import ContentfulApi from '../../utils/ContentfulApi';
 import { ProductData } from './';
 
@@ -15,16 +17,17 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 	console.log(product);
 
 	return (
-		<>
-			<h1>{slug}</h1>
-		</>
+		<Layout seo={{ title: product.name, description: product.description }}>
+			<h1>{product.name}</h1>
+			<Image src={product.imageCollection.items[0].url} alt={product.imageCollection.items[0].description} layout="fixed" objectFit="cover" loading="eager" height="500px" width="400px" />
+		</Layout>
 	);
 };
 
 export default ProductDetails;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const product = await ContentfulApi.getProductBySlug(params!.slug as string);
+	const product = await ContentfulApi.getProductBySlug(params!.slug![0]);
 
 	// Add this with fallback: "blocking"
 	// So that if we do not have a post on production,

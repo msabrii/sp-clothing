@@ -68,7 +68,9 @@ export default class ContentfulApi {
 			}
 		`;
 
-		const { productCollection } = await this.callContentful(query);
+		const { productCollection } = await this.callContentful(query, {
+			slug: slug,
+		});
 
 		return productCollection.items[0];
 	}
