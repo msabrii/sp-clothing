@@ -13,9 +13,10 @@ export interface ImageObject {
 	url: string;
 }
 
-interface ProductData {
+export interface ProductData {
 	description: string;
 	name: string;
+	slug: string;
 	imageCollection: imageCollectionData;
 }
 
@@ -24,6 +25,7 @@ interface imageCollectionData {
 }
 
 const Products: FC<Props> = ({ products }) => {
+	console.log(products);
 	return (
 		<>
 			<Head>
@@ -34,7 +36,7 @@ const Products: FC<Props> = ({ products }) => {
 			<main>
 				<h1>Products</h1>
 				{products.map((product: any) => (
-					<Card title={product.name} url="/" key={product.sys.id} img={product.imageCollection.items[0]} description={product.description} />
+					<Card title={product.name} url={`/products/${product.slug}`} key={product.sys.id} img={product.imageCollection.items[0]} description={product.description} />
 				))}
 			</main>
 		</>
@@ -45,7 +47,6 @@ export default Products;
 
 export async function getStaticProps() {
 	const products = await ContentfulApi.getAllProducts();
-
 	// Add this with fallback: "blocking"
 	// So that if we do not have a post on production,
 	// the 404 is served
