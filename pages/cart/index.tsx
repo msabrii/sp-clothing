@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import Layout from '../../components/Layout/Layout';
+import { CartContext } from '../../context/CartContext';
 import ContentfulApi from '../../utils/ContentfulApi';
 import { Page } from '../../utils/interfaces';
 
@@ -7,9 +9,11 @@ interface Props {
 }
 
 const cart: React.FC<Props> = ({ cartPage }) => {
+	const { cartItems } = useContext(CartContext);
 	return (
 		<Layout seo={cartPage.seo}>
 			<h1>{cartPage.name}</h1>
+			{cartItems && cartItems.map((cartItem) => <p>{cartItem.item.name}</p>)}
 		</Layout>
 	);
 };

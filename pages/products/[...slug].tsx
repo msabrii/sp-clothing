@@ -1,7 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import ImageGallery from '../../components/ImageGallery/ImageGallery';
 import Layout from '../../components/Layout/Layout';
+import { CartContext } from '../../context/CartContext';
 import ContentfulApi from '../../utils/ContentfulApi';
 import { ProductData } from './';
 
@@ -14,7 +15,26 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 	// const slug = router.query.slug || [];
 
 	// console.log(product);
-	const [size, setSize] = useState<number | null>(null);
+	const [size, setSize] = useState<number | undefined>();
+	const { setCartItems, cartItems } = useContext(CartContext);
+
+	const addToCart = () => {
+		if (size) {
+			setCartItems((prevItems) => {
+				if (prevItems) {
+					return [...prevItems, { item: product, size: size }];
+				}
+				return [{ item: product, size: size }];
+			});
+		}
+	};
+
+	const handleSizeClick = (newSize: number) => {
+		if (newSize === size) {
+			return setSize(undefined);
+		}
+		setSize(newSize);
+	};
 
 	return (
 		<Layout seo={product.seo}>
@@ -26,8 +46,16 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 					<h2 className="mb-4">{product.name}</h2>
 					<h4 className="mb-4">300$</h4>
 					<p className="mb-2">Choose a size</p>
-					<SizeList sizes={product.sizeList.sizes} handleClick={(s) => setSize(s)} currentSize={size} />
-					<button className="border-black border p-2 my-6 hover:text-white hover:bg-black transition-all duration-300">Add to Cart</button>
+					<SizeList
+						sizes={product.sizeList.sizes}
+						handleClick={(s) => {
+							handleSizeClick(s);
+						}}
+						currentSize={size}
+					/>
+					<button className="border-black border p-2 my-6 hover:text-white hover:bg-black transition-all duration-300 disabled:bg-gray-500" onClick={addToCart} disabled={!size}>
+						Add to Cart
+					</button>
 					<p className="mt-2">{product.description}</p>
 				</div>
 			</div>
@@ -35,19 +63,19 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 	);
 };
 
-const SizeList: React.FC<{ sizes: number[]; handleClick: (size: number) => void; currentSize: number | null }> = ({ sizes, handleClick, currentSize }) => {
+const SizeList: React.FC<{ sizes: number[]; handleClick: (size: number) => void; currentSize: number | undefined }> = ({ sizes, handleClick, currentSize }) => {
 	return (
 		<div className="flex flex-row flex-grow flex-wrap">
 			{sizes
 				.sort((a, b) => a - b)
 				.map((size, idx) => (
-					<span
+					<button
 						key={idx}
 						onClick={() => handleClick(size)}
 						className={`border border-black w-12 h-12 mr-2 mb-2 flex justify-center items-center cursor-pointer ${currentSize === size && 'bg-black text-white'}`}
 					>
 						{size}
-					</span>
+					</button>
 				))}
 		</div>
 	);
