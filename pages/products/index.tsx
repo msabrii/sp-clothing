@@ -15,6 +15,7 @@ export interface ProductData {
 	slug: string;
 	imageCollection: imageCollectionData;
 	seo: SEO;
+	sizeList: { sizes: number[] };
 }
 
 const Products: FC<Props> = ({ productPage, products }) => {

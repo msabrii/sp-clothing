@@ -84,6 +84,9 @@ export default class ContentfulApi {
 						}
 						name
 						description
+						sizeList {
+							sizes
+						}
 						seo {
 							metaTitle
 							metaDescription

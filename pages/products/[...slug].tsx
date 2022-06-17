@@ -18,16 +18,16 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 
 	return (
 		<Layout seo={product.seo}>
-			<div className="flex flex-row justify-center items-center gap-8 mb-4 lg:min-h-[800px] min-h-[600px]">
-				<div className="w-1/2 h-full">
+			<div className="flex flex-col lg:flex-row lg:gap-8 justify-center items-center  mb-4 lg:min-h-[800px] min-h-[600px]">
+				<div className="w-full lg:w-1/2 h-full">
 					<ImageGallery images={product.imageCollection.items} />
 				</div>
-				<div className="flex flex-col w-1/2 h-full justify-between">
-					<h2>{product.name}</h2>
-					<h4>300$</h4>
-					<p>Choose a size</p>
-					<SizeList sizes={[6, 7, 8, 9, 10]} handleClick={(s) => setSize(s)} currentSize={size} />
-					<button className="border-black border p-2 mt-2 hover:text-white hover:bg-black transition-all duration-300">Add to Cart</button>
+				<div className="flex flex-col w-full lg:w-1/2 h-full justify-between">
+					<h2 className="mb-4">{product.name}</h2>
+					<h4 className="mb-4">300$</h4>
+					<p className="mb-2">Choose a size</p>
+					<SizeList sizes={product.sizeList.sizes} handleClick={(s) => setSize(s)} currentSize={size} />
+					<button className="border-black border p-2 my-6 hover:text-white hover:bg-black transition-all duration-300">Add to Cart</button>
 					<p className="mt-2">{product.description}</p>
 				</div>
 			</div>
@@ -37,12 +37,18 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 
 const SizeList: React.FC<{ sizes: number[]; handleClick: (size: number) => void; currentSize: number | null }> = ({ sizes, handleClick, currentSize }) => {
 	return (
-		<div className="flex flex-row">
-			{sizes.map((size) => (
-				<span onClick={() => handleClick(size)} className={`border border-black w-12 h-12 mr-2 flex justify-center items-center cursor-pointer ${currentSize === size && 'bg-black text-white'}`}>
-					{size}
-				</span>
-			))}
+		<div className="flex flex-row flex-grow flex-wrap">
+			{sizes
+				.sort((a, b) => a - b)
+				.map((size, idx) => (
+					<span
+						key={idx}
+						onClick={() => handleClick(size)}
+						className={`border border-black w-12 h-12 mr-2 mb-2 flex justify-center items-center cursor-pointer ${currentSize === size && 'bg-black text-white'}`}
+					>
+						{size}
+					</span>
+				))}
 		</div>
 	);
 };

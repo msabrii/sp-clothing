@@ -23,7 +23,7 @@ const ImageGallery: React.FC<{ images: ImageObject[] }> = ({ images }) => {
 		<div className="flex flex-row">
 			<div className="flex flex-col lg:mr-2">
 				{images.map((image, idx) => (
-					<div className={`lg:block hidden border overflow-hidden  rounded-md shadow-xl w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-black'}`} key={idx}>
+					<div className={`lg:block hidden border overflow-hidden rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`} key={idx}>
 						<Image src={image.url} alt={image.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" onClick={() => setCurrent(image)} />
 					</div>
 				))}
