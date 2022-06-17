@@ -12,7 +12,17 @@ module.exports = {
 			tablet: { min: '700px', max: '859px' },
 			mobile: { max: '699px' },
 		},
-		extend: {},
+		extend: {
+			animation: {
+				'slide-in-left': 'slideIn ease-out 0.5s',
+			},
+			keyframes: {
+				slideIn: {
+					'0%': { transform: 'translate(0, 500px)' },
+					'100%': { transform: 'translate(0, 0)' },
+				},
+			},
+		},
 	},
 	plugins: [],
 };

@@ -1,3 +1,4 @@
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import NavItem from './NavItem/NavItem';
 
@@ -11,6 +12,8 @@ const NavBar = () => {
 				<ul className="flex flex-row text-white relative">
 					<NavItem name="Home" link="/" />
 					<NavItem name="Products" link="/products" />
+					<NavItem name="About Us" link="/about-us" />
+					<NavItem icon={faShoppingCart} link="/cart" />
 				</ul>
 			</div>
 		</nav>

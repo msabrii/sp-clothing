@@ -46,16 +46,17 @@ export default class ContentfulApi {
 		return productCollection.items;
 	}
 
-	static async getProductBySlug(slug: string) {
+	static async getNewProducts() {
 		const query = gql`
-			query getProductBySlug($slug: String) {
-				productCollection(where: { slug: $slug }, limit: 1) {
+			query {
+				productCollection(limit: 6, order: sys_publishedAt_DESC) {
 					items {
 						sys {
 							id
 						}
 						name
 						description
+						slug
 						imageCollection(preview: false) {
 							items {
 								title
@@ -70,6 +71,98 @@ export default class ContentfulApi {
 
 		const { productCollection } = await this.callContentful(query);
 
+		return productCollection.items;
+	}
+
+	static async getProductBySlug(slug: string) {
+		const query = gql`
+			query getProductBySlug($slug: String) {
+				productCollection(where: { slug: $slug }, limit: 1) {
+					items {
+						sys {
+							id
+						}
+						name
+						description
+						sizeList {
+							sizes
+						}
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
+						imageCollection(preview: false) {
+							items {
+								title
+								description
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { productCollection } = await this.callContentful(query, {
+			slug: slug,
+		});
+
 		return productCollection.items[0];
+	}
+
+	static async getPageBySlug(slug: string) {
+		const query = gql`
+			query getPageBySlug($slug: String) {
+				pageCollection(where: { slug: $slug }, limit: 1) {
+					items {
+						name
+						slug
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { pageCollection } = await this.callContentful(query, {
+			slug: slug,
+		});
+
+		return pageCollection.items[0];
+	}
+
+	static async getAllPages() {
+		const query = gql`
+			query {
+				pageCollection(preview: false) {
+					items {
+						name
+						slug
+						seo {
+							metaTitle
+							metaDescription
+							canonicalUrl
+							metaImage {
+								url
+							}
+						}
+					}
+				}
+			}
+		`;
+
+		const { pageCollection } = await this.callContentful(query);
+
+		return pageCollection.items;
 	}
 }
