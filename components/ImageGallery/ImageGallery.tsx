@@ -19,11 +19,11 @@ const ImageGallery: React.FC<{ images: ImageObject[] }> = ({ images }) => {
 	}, [modalOpen]);
 
 	return (
-		<div className="flex flex-col-reverse xl:flex-row">
-			<div className="flex flex-col lg:flex-row xl:flex-col xl:mr-2 gap-2 w-full overflow-x-auto">
+		<div className="flex flex-col-reverse items-center xl:items-start xl:flex-row mt-8 xl:mt-0">
+			<div className="flex flex-col lg:flex-row xl:flex-col xl:mr-2 gap-2">
 				{images.map((image, idx) => (
 					<div className={`lg:flex hidden border rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`} key={idx}>
-						<img src={image.url} alt={image.description} className="object-cover w-full h-full" onClick={() => setCurrent(image)} />
+						<img src={image.url} alt={image.description} className="rounded-md object-cover w-full h-full" onClick={() => setCurrent(image)} />
 					</div>
 				))}
 			</div>

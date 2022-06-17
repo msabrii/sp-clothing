@@ -95,7 +95,7 @@ export default class ContentfulApi {
 								url
 							}
 						}
-						imageCollection(preview: false) {
+						imageCollection(preview: false, limit: 5) {
 							items {
 								title
 								description
