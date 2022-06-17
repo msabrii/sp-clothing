@@ -18,11 +18,11 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 
 	return (
 		<Layout seo={product.seo}>
-			<div className="flex flex-col lg:flex-row lg:gap-8 justify-center items-center  mb-4 lg:min-h-[800px] min-h-[600px]">
-				<div className="w-full lg:w-1/2 h-full">
+			<div className="flex flex-col xl:flex-row xl:gap-8 justify-center items-center  mb-4 xl:min-h-[800px] min-h-[600px]">
+				<div className="w-full xl:w-1/2 h-full">
 					<ImageGallery images={product.imageCollection.items} />
 				</div>
-				<div className="flex flex-col w-full lg:w-1/2 h-full justify-between">
+				<div className="flex flex-col w-full xl:w-1/2 h-full justify-between">
 					<h2 className="mb-4">{product.name}</h2>
 					<h4 className="mb-4">300$</h4>
 					<p className="mb-2">Choose a size</p>

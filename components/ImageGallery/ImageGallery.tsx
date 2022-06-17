@@ -1,6 +1,5 @@
 import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -20,43 +19,43 @@ const ImageGallery: React.FC<{ images: ImageObject[] }> = ({ images }) => {
 	}, [modalOpen]);
 
 	return (
-		<div className="flex flex-row">
-			<div className="flex flex-col lg:mr-2">
+		<div className="flex flex-col-reverse xl:flex-row">
+			<div className="flex flex-col lg:flex-row xl:flex-col xl:mr-2 gap-2 w-full overflow-x-auto">
 				{images.map((image, idx) => (
-					<div className={`lg:block hidden border overflow-hidden rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`} key={idx}>
-						<Image src={image.url} alt={image.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" onClick={() => setCurrent(image)} />
+					<div className={`lg:flex hidden border rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`} key={idx}>
+						<img src={image.url} alt={image.description} className="object-cover w-full h-full" onClick={() => setCurrent(image)} />
 					</div>
 				))}
 			</div>
-			<div className="w-full h-full cursor-pointer">
-				<div className="lg:block hidden ">
-					<Image src={current.url} alt={current.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" onClick={() => setModalOpen(true)} />{' '}
+			<div className="w-full h-full cursor-pointer mb-4">
+				<div className="hidden lg:flex  w-full">
+					<img src={current.url} alt={current.description} className="object-cover w-full xl:w-[500px] h-[500px]" onClick={() => setModalOpen(true)} />
 				</div>
-				<Swiper className="lg:hidden block z-0" spaceBetween={50} slidesPerView={1} onSlideChange={() => console.log('slide change')} onSwiper={(swiper) => console.log(swiper)}>
+				<Swiper className="lg:hidden block z-0" spaceBetween={50} slidesPerView={1}>
 					{images.map((image, idx) => (
 						<SwiperSlide key={idx}>
-							<Image src={image.url} alt={image.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" onClick={() => setModalOpen(true)} />
+							<img src={image.url} alt={image.description} className="w-full h-[350px] object-cover" onClick={() => setModalOpen(true)} />
 						</SwiperSlide>
 					))}
 				</Swiper>
 			</div>
 			<ImageModal open={modalOpen} closeModal={() => setModalOpen(false)}>
-				<div className="flex-col lg:mr-2 lg:flex hidden ">
+				<div className="flex-col xl:mr-2 xl:flex hidden">
 					{images.map((image, idx) => (
 						<div key={idx} className={`rounded-md shadow-xl w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-black'}`}>
-							<Image src={image.url} alt={image.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" onClick={() => setCurrent(image)} />
+							<img src={image.url} alt={image.description} onClick={() => setCurrent(image)} />
 						</div>
 					))}
 				</div>
-				<div className="w-full lg:w-1/2 h-[full]">
-					<div className="lg:block hidden lg:p-16">
-						<Image src={current.url} alt={current.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" />
+				<div className="w-full xl:w-1/2 h-[full]">
+					<div className="xl:block hidden xl:p-16">
+						<img src={current.url} alt={current.description} />
 					</div>
-					<div className="lg:hidden block w-full h-full">
+					<div className="xl:hidden block w-full h-full">
 						<Swiper spaceBetween={50} slidesPerView={1} onSlideChange={() => console.log('slide change')} onSwiper={(swiper) => console.log(swiper)}>
 							{images.map((image, idx) => (
 								<SwiperSlide key={idx}>
-									<Image src={image.url} alt={image.description} layout="responsive" objectFit="cover" loading="eager" height="100%" width="100%" />
+									<img src={image.url} alt={image.description} />
 								</SwiperSlide>
 							))}
 						</Swiper>
@@ -72,7 +71,7 @@ export default ImageGallery;
 const ImageModal: React.FC<{ open: boolean; children: React.ReactNode; closeModal: () => void }> = ({ open, children, closeModal }) => {
 	return (
 		<div className={`z-50 w-screen h-screen absolute top-0 left-0 bg-white flex justify-center items-center ${!open && 'hidden'} animate-slide-in-left`}>
-			<button className="w-14 h-14 p-2 absolute right-8 lg:right-20 top-10 rounded-full shadow-lg hover:-translate-y-1 transition-all" onClick={closeModal}>
+			<button className="w-14 h-14 p-2 absolute right-8 xl:right-20 top-10 rounded-full shadow-xl hover:-translate-y-1 transition-all" onClick={closeModal}>
 				<FontAwesomeIcon icon={faClose} className="w-full h-full" />
 			</button>
 			{children}
