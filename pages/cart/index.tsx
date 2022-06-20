@@ -8,17 +8,17 @@ interface Props {
 	cartPage: Page;
 }
 
-const cart: React.FC<Props> = ({ cartPage }) => {
+const Cart: React.FC<Props> = ({ cartPage }) => {
 	const { cartItems } = useContext(CartContext);
 	return (
 		<Layout seo={cartPage.seo}>
 			<h1>{cartPage.name}</h1>
-			{cartItems && cartItems.map((cartItem) => <p>{cartItem.item.name}</p>)}
+			{cartItems && cartItems.map((cartItem, idx) => <p key={idx}>{cartItem.item.name}</p>)}
 		</Layout>
 	);
 };
 
-export default cart;
+export default Cart;
 
 export async function getStaticProps() {
 	const cartPage = await ContentfulApi.getPageBySlug('cart');

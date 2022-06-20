@@ -16,7 +16,7 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 
 	// console.log(product);
 	const [size, setSize] = useState<number | undefined>();
-	const { setCartItems, cartItems } = useContext(CartContext);
+	const { setCartItems } = useContext(CartContext);
 
 	const addToCart = () => {
 		if (size) {
