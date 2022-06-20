@@ -41,5 +41,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const pagesCollection = await ContentfulApi.getAllPages();
-	return { paths: pagesCollection?.map((page: { slug: string }) => `/${page.slug}`) ?? [], fallback: false };
+	return { paths: pagesCollection?.map((page: { slug: string }) => `/${page.slug}`).flat() ?? [], fallback: false };
 };
