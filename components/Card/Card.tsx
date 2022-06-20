@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { ImageObject } from '../../pages/products/index';
-
+import { ImageObject } from '../../utils/interfaces';
 interface ICardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 	backgroundColor?: string;
 	color?: string;
