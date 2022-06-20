@@ -24,9 +24,11 @@ const Products: FC<Props> = ({ productPage, products }) => {
 		<Layout seo={productPage.seo}>
 			<main>
 				<h1>Products</h1>
-				{products.map((product: any) => (
-					<Card title={product.name} url={`/products/${product.slug}`} key={product.sys.id} img={product.imageCollection.items[0]} description={product.description} />
-				))}
+				<div className="flex flex-row gap-1 lg:gap-8 flex-grow flex-wrap justify-center items-center">
+					{products.map((product: any) => (
+						<Card title={product.name} url={`/products/${product.slug}`} key={product.sys.id} img={product.imageCollection.items[0]} description={product.description} />
+					))}
+				</div>
 			</main>
 		</Layout>
 	);

@@ -63,7 +63,7 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 	);
 };
 
-const SizeList: React.FC<{ sizes: number[]; handleClick: (size: number) => void; currentSize: number | undefined }> = ({ sizes, handleClick, currentSize }) => {
+const SizeList: React.FC<{ sizes: number[]; handleClick: (_size: number) => void; currentSize: number | undefined }> = ({ sizes, handleClick, currentSize }) => {
 	return (
 		<div className="flex flex-row flex-grow flex-wrap">
 			{sizes
@@ -99,5 +99,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const productsCollection = await ContentfulApi.getAllProducts();
-	return { paths: productsCollection?.map((product: { slug: string }) => `/products/${product.slug}`) ?? [], fallback: false };
+	const paths = productsCollection?.map((product: { slug: string }) => `/products/${product.slug}`) ?? [];
+	return { paths: paths.flat(), fallback: false };
 };

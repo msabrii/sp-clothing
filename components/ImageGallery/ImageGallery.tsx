@@ -19,22 +19,26 @@ const ImageGallery: React.FC<{ images: ImageObject[] }> = ({ images }) => {
 	}, [modalOpen]);
 
 	return (
-		<div className="flex flex-col-reverse xl:flex-row">
-			<div className="flex flex-col lg:flex-row xl:flex-col xl:mr-2 gap-2 w-full overflow-x-auto">
+		<div className="flex flex-col-reverse items-center xl:items-start xl:flex-row mt-8 xl:mt-0">
+			<div className="flex flex-col lg:flex-row xl:flex-col xl:mr-2 gap-2">
 				{images.map((image, idx) => (
-					<div className={`lg:flex hidden border rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`} key={idx}>
-						<img src={image.url} alt={image.description} className="object-cover w-full h-full" onClick={() => setCurrent(image)} />
-					</div>
+					<button
+						className={`lg:flex hidden border rounded-md w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-cyan-600 shadow-lg'}`}
+						key={idx}
+						onClick={() => setCurrent(image)}
+					>
+						<img src={image.url} alt={image.description} className="rounded-md object-cover w-full h-full" />
+					</button>
 				))}
 			</div>
 			<div className="w-full h-full cursor-pointer mb-4">
-				<div className="hidden lg:flex  w-full">
-					<img src={current.url} alt={current.description} className="object-cover w-full xl:w-[500px] h-[500px]" onClick={() => setModalOpen(true)} />
-				</div>
+				<button className="hidden lg:flex  w-full" onClick={() => setModalOpen(true)}>
+					<img src={current.url} alt={current.description} className="object-cover w-full xl:w-[500px] h-[500px]" />
+				</button>
 				<Swiper className="lg:hidden block z-0" spaceBetween={50} slidesPerView={1}>
 					{images.map((image, idx) => (
-						<SwiperSlide key={idx}>
-							<img src={image.url} alt={image.description} className="w-full h-[350px] object-cover" onClick={() => setModalOpen(true)} />
+						<SwiperSlide key={idx} onClick={() => setModalOpen(true)}>
+							<img src={image.url} alt={image.description} className="w-full h-[350px] object-cover" />
 						</SwiperSlide>
 					))}
 				</Swiper>
@@ -42,9 +46,9 @@ const ImageGallery: React.FC<{ images: ImageObject[] }> = ({ images }) => {
 			<ImageModal open={modalOpen} closeModal={() => setModalOpen(false)}>
 				<div className="flex-col xl:mr-2 xl:flex hidden">
 					{images.map((image, idx) => (
-						<div key={idx} className={`rounded-md shadow-xl w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-black'}`}>
-							<img src={image.url} alt={image.description} onClick={() => setCurrent(image)} />
-						</div>
+						<button key={idx} className={`rounded-md shadow-xl w-[70px] h-[70px] mb-2 cursor-pointer ${current === image && 'border-[2px] border-black'}`} onClick={() => setCurrent(image)}>
+							<img src={image.url} alt={image.description} className="rounded-md object-cover w-full h-full" />
+						</button>
 					))}
 				</div>
 				<div className="w-full xl:w-1/2 h-[full]">

@@ -40,6 +40,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+	const customPages = ['cart', 'products'];
 	const pagesCollection = await ContentfulApi.getAllPages();
-	return { paths: pagesCollection?.map((page: { slug: string }) => `/${page.slug}`) ?? [], fallback: false };
+	const filterPages = pagesCollection.filter((page: any) => !customPages.includes(page.slug));
+	const paths = filterPages?.map((page: { slug: string }) => `/${page.slug}`) ?? [];
+	return { paths: paths.flat(), fallback: false };
 };
