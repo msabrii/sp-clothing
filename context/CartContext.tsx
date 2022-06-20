@@ -10,7 +10,7 @@ interface ProviderProps {
 	children: React.ReactNode;
 }
 
-interface cartItem {
+export interface cartItem {
 	item: ProductData;
 	size: number;
 }
