@@ -12,8 +12,12 @@ const Cart: React.FC<Props> = ({ cartPage }) => {
 	const { cartItems } = useContext(CartContext);
 	return (
 		<Layout seo={cartPage.seo}>
-			<h1>{cartPage.name}</h1>
-			{cartItems && cartItems.map((cartItem, idx) => <p key={idx}>{cartItem.item.name}</p>)}
+			<div className="flex flex-col items-center w-full">
+				<h1 className="mt-3">{cartPage.name}</h1>
+				<div className="flex justify-center items-center border min-h-[400px] mt-5 w-[70%]">
+					{cartItems ? cartItems.map((cartItem, idx) => <p key={idx}>{cartItem.item.name + ' ' + cartItem.size}</p>) : <p>Your Cart Is Empty</p>}
+				</div>
+			</div>
 		</Layout>
 	);
 };
