@@ -11,7 +11,7 @@ interface ICardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDi
 }
 
 const Card: React.FC<ICardProps> = (props) => {
-	const { backgroundColor, color, style, url, img, title, description } = props;
+	const { backgroundColor, color, style, url, img, title } = props;
 	let _style: React.CSSProperties = style || {};
 
 	const router = useRouter();

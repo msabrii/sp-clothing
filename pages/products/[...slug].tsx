@@ -35,19 +35,19 @@ const ProductDetails: FC<IProductDetails> = ({ product }) => {
 	);
 };
 
-const SizeList: React.FC<{ sizes: number[]; handleClick: (size: number) => void; currentSize: number | null }> = ({ sizes, handleClick, currentSize }) => {
+const SizeList: React.FC<{ sizes: number[]; handleClick: (_size: number) => void; currentSize: number | null }> = ({ sizes, handleClick, currentSize }) => {
 	return (
 		<div className="flex flex-row flex-grow flex-wrap">
 			{sizes
 				.sort((a, b) => a - b)
 				.map((size, idx) => (
-					<span
+					<button
 						key={idx}
 						onClick={() => handleClick(size)}
 						className={`border border-black w-12 h-12 mr-2 mb-2 flex justify-center items-center cursor-pointer ${currentSize === size && 'bg-black text-white'}`}
 					>
 						{size}
-					</span>
+					</button>
 				))}
 		</div>
 	);
@@ -71,5 +71,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
 	const productsCollection = await ContentfulApi.getAllProducts();
-	return { paths: productsCollection?.map((product: { slug: string }) => `/products/${product.slug}`) ?? [], fallback: false };
+	const paths = productsCollection?.map((product: { slug: string }) => `/products/${product.slug}`) ?? [];
+	return { paths: paths.flat(), fallback: false };
 };

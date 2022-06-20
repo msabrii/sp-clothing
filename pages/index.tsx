@@ -16,8 +16,8 @@ const Home: React.FC<IHomeProps> = ({ products }) => {
 					<h1>Home</h1>
 					<h2>New Arrivals</h2>
 					<div className="flex flex-row flex-wrap">
-						{products.map((product) => (
-							<Card title={product.name} url={`/products/${product.slug}`} />
+						{products.map((product, idx) => (
+							<Card key={idx} title={product.name} url={`/products/${product.slug}`} />
 						))}
 					</div>
 				</main>
