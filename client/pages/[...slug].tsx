@@ -15,7 +15,6 @@ interface IPage {
 const Page: FC<IPage> = ({ page }) => {
 	// const router = useRouter();
 	// const slug = router.query.slug || [];
-
 	return (
 		<Layout seo={page.seo}>
 			<h1>{page.name}</h1>
@@ -26,7 +25,7 @@ const Page: FC<IPage> = ({ page }) => {
 export default Page;
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
-	const page = await ContentfulApi.getPageBySlug(params!.slug![0], locale!, params!.locales! as string[]);
+	const page = await ContentfulApi.getPageBySlug(params!.slug![0], locale!);
 
 	// Add this with fallback: "blocking"
 	// So that if we do not have a page on production,
@@ -51,11 +50,11 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
 				return true;
 			})
 			.map((page: any) => {
-				// let slugs = page.seo.canonicalUrl.split('/');
-				// slugs = slugs.filter((obj: any) => obj !== '');
+				let slugs = page.seo.canonicalUrl.split('/');
+				slugs = slugs.filter((obj: any) => obj !== '');
 
 				return {
-					params: { slug: `/${page.slug}`, locales },
+					params: { slug: slugs },
 					locale: locale,
 				};
 			});

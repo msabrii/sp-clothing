@@ -1,0 +1,30 @@
+{
+	"name": "server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Ameer Sabri & Andrew Peliza",
+	"license": "ISC",
+	"dependencies": {
+		"@types/aws-sdk": "^2.7.0",
+		"aws-lambda": "^1.0.6",
+		"aws-sdk": "^2.977.0",
+		"middy": "^0.28.2",
+		"ts-loader": "^8.0.4",
+		"typescript": "^4.0.3",
+		"uuid": "^8.3.2",
+		"webpack": "^4.44.2"
+	},
+	"devDependencies": {
+		"@types/aws-lambda": "^8.10.62",
+		"@types/node": "^14.14.6",
+		"@types/uuid": "^8.3.1",
+		"typescript": "^4.0.3",
+		"typescript-is": "^0.16.3",
+		"webpack-cli": "^3.3.12",
+		"zip-webpack-plugin": "^4.0.1"
+	}
+}

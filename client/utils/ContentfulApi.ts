@@ -117,7 +117,7 @@ export default class ContentfulApi {
 	static async getPageBySlug(slug: string, locale: string, locales: string[]) {
 		const query = gql`
 			query getPageBySlug($slug: String, $locale: String, $locales: [String]) {
-				pageCollection(where: { slug: $slug, availability_contains_some: $locales }, locale: $locale, limit: 1) {
+				pageCollection(where: { availability_contains_some: $locales, slug: $slug }, locale: $locale, limit: 1) {
 					items {
 						name
 						slug
@@ -145,7 +145,7 @@ export default class ContentfulApi {
 
 	static async getAllPages(preview: boolean, locale: string) {
 		const query = gql`
-			query ($preview: Boolean, $locale: [String]) {
+			query ($locale: [String]) {
 				pageCollection(preview: false, where: { availability_contains_some: $locale, slug_not: "/" }) {
 					items {
 						name
@@ -165,6 +165,6 @@ export default class ContentfulApi {
 
 		const { pageCollection } = await this.callContentful(query, { preview, locale });
 
-		return pageCollection.items;
+		return pageCollection;
 	}
 }
