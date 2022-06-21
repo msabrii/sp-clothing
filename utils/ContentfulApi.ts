@@ -114,10 +114,10 @@ export default class ContentfulApi {
 		return productCollection.items[0];
 	}
 
-	static async getPageBySlug(slug: string) {
+	static async getPageBySlug(slug: string, locale: string, locales: string[]) {
 		const query = gql`
-			query getPageBySlug($slug: String) {
-				pageCollection(where: { slug: $slug }, limit: 1) {
+			query getPageBySlug($slug: String, $locale: String, $locales: [String]) {
+				pageCollection(where: { slug: $slug, availability_contains_some: $locales }, locale: $locale, limit: 1) {
 					items {
 						name
 						slug
@@ -136,6 +136,8 @@ export default class ContentfulApi {
 
 		const { pageCollection } = await this.callContentful(query, {
 			slug: slug,
+			locale: locale,
+			locales: locales,
 		});
 
 		return pageCollection.items[0];
