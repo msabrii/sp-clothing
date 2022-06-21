@@ -141,10 +141,10 @@ export default class ContentfulApi {
 		return pageCollection.items[0];
 	}
 
-	static async getAllPages() {
+	static async getAllPages(preview: boolean, locale: string) {
 		const query = gql`
-			query {
-				pageCollection(preview: false) {
+			query ($preview: Boolean, $locale: [String]) {
+				pageCollection(preview: false, where: { availability_contains_some: $locale, slug_not: "/" }) {
 					items {
 						name
 						slug
@@ -161,7 +161,7 @@ export default class ContentfulApi {
 			}
 		`;
 
-		const { pageCollection } = await this.callContentful(query);
+		const { pageCollection } = await this.callContentful(query, { preview, locale });
 
 		return pageCollection.items;
 	}

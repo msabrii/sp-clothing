@@ -25,8 +25,8 @@ const Page: FC<IPage> = ({ page }) => {
 
 export default Page;
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const page = await ContentfulApi.getPageBySlug(params!.slug![0]);
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+	const page = await ContentfulApi.getPageBySlug(params!.slug![0], locale);
 
 	// Add this with fallback: "blocking"
 	// So that if we do not have a page on production,
@@ -39,10 +39,34 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return { props: { page } };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
 	const customPages = ['cart', 'products'];
-	const pagesCollection = await ContentfulApi.getAllPages();
-	const filterPages = pagesCollection.filter((page: any) => !customPages.includes(page.slug));
-	const paths = filterPages?.map((page: { slug: string }) => `/${page.slug}`) ?? [];
+
+	const localePaths = locales!.flatMap(async (locale) => {
+		const pageCollection = await ContentfulApi.getAllPages(false, locale);
+
+		return pageCollection.items
+			.filter((page: any) => {
+				if (customPages.includes(page.slug)) return false;
+				return true;
+			})
+			.map((page: any) => {
+				// let slugs = page.seo.canonicalUrl.split('/');
+				// slugs = slugs.filter((obj: any) => obj !== '');
+
+				return {
+					params: { slug: `/${page.slug}` },
+					locale: locale,
+				};
+			});
+	});
+
+	let paths = await Promise.all(localePaths).then((values) => {
+		return values;
+	});
+
+	// const pagesCollection = await ContentfulApi.getAllPages();
+	// const filterPages = pagesCollection.filter((page: any) => !customPages.includes(page.slug));
+	// const paths = filterPages?.map((page: { slug: string }) => `/${page.slug}`) ?? [];
 	return { paths: paths.flat(), fallback: false };
 };
