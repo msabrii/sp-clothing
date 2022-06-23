@@ -15,3 +15,14 @@ terraform {
 provider "aws" {
   region = "eu-west-1"
 }
+
+module "api-gateway" {
+  source = "./modules/api-gateway"
+}
+
+
+module "lambda" {
+  source = "./modules/lambda"
+}
+
+

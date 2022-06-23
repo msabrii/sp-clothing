@@ -1,5 +1,4 @@
 import { APIGatewayEventRequestContext } from "aws-lambda";
-import * as aws from "aws-sdk";
 import middy from "middy";
 import { Response } from "../models/response";
 
@@ -11,13 +10,13 @@ import {
   jsonBodyParser,
 } from "middy/middlewares";
 import { HttpStatusCode } from "../constants/httpStatusCodes";
-import { getAwsCognitoClaim } from "../helpers/awsCognitoClaims";
+// import { getAwsCognitoClaim } from "../helpers/awsCognitoClaims";
 
-export const deps = {
-  docClient: () =>
-    new aws.DynamoDB.DocumentClient({ convertEmptyValues: true }),
-  getAwsCognitoClaim: getAwsCognitoClaim,
-};
+// export const deps = {
+//   docClient: () =>
+//     new aws.DynamoDB.DocumentClient({ convertEmptyValues: true }),
+//   getAwsCognitoClaim: getAwsCognitoClaim,
+// };
 
 // const tableName = `users_table_${process.env.environment}`;
 
