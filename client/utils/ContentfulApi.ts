@@ -114,10 +114,10 @@ export default class ContentfulApi {
 		return productCollection.items[0];
 	}
 
-	static async getPageBySlug(slug: string) {
+	static async getPageBySlug(slug: string, locale: string, locales: string[]) {
 		const query = gql`
-			query getPageBySlug($slug: String) {
-				pageCollection(where: { slug: $slug }, limit: 1) {
+			query getPageBySlug($slug: String, $locale: String, $locales: [String]) {
+				pageCollection(where: { availability_contains_some: $locales, slug: $slug }, locale: $locale, limit: 1) {
 					items {
 						name
 						slug
@@ -136,15 +136,17 @@ export default class ContentfulApi {
 
 		const { pageCollection } = await this.callContentful(query, {
 			slug: slug,
+			locale: locale,
+			locales: locales,
 		});
 
 		return pageCollection.items[0];
 	}
 
-	static async getAllPages() {
+	static async getAllPages(preview: boolean, locale: string) {
 		const query = gql`
-			query {
-				pageCollection(preview: false) {
+			query ($locale: [String]) {
+				pageCollection(preview: false, where: { availability_contains_some: $locale, slug_not: "/" }) {
 					items {
 						name
 						slug
@@ -161,8 +163,8 @@ export default class ContentfulApi {
 			}
 		`;
 
-		const { pageCollection } = await this.callContentful(query);
+		const { pageCollection } = await this.callContentful(query, { preview, locale });
 
-		return pageCollection.items;
+		return pageCollection;
 	}
 }
