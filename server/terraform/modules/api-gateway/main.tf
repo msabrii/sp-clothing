@@ -7,14 +7,14 @@ data "template_file" api_swagger{
   template = "${file("./api/ApiDefinitionBundled.yaml")}"
 
   vars = {
-    payment_lambda_arn  ="${aws_lambda_function.lambda["payment"].invoke_arn}"
-    api_gateway_role_arn = "${aws_iam_role.iam_for_apigw.arn}"
+    payment_lambda_arn  = var.aws_lambda_functions["payment"].invoke_arn
+    api_gateway_role_arn = aws_iam_role.iam_for_apigw.arn
   }
 }
 
 resource "aws_api_gateway_deployment" "sp_api_gateway_deployment" {
   rest_api_id = "${aws_api_gateway_rest_api.sp_api_gateway.id}"
-  stage_name  = "${terraform.workspace}"
+  stage_name  = terraform.workspace
 }
 
 resource "aws_api_gateway_account" "aws_api_gateway_account_cloudwatch" {
@@ -23,7 +23,7 @@ resource "aws_api_gateway_account" "aws_api_gateway_account_cloudwatch" {
 
 resource "aws_api_gateway_method_settings" "sp_api_gateway_settings" {
   rest_api_id = "${aws_api_gateway_rest_api.sp_api_gateway.id}"
-  stage_name  = "${terraform.workspace}"
+  stage_name  = terraform.workspace
   method_path = "*/*"
 
   settings {
@@ -100,7 +100,7 @@ EOF
 resource "aws_lambda_permission" "api-gateway-invoke-payment-lambda" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.lambda["payment"].arn}"
+  function_name = var.aws_lambda_functions["payment"].arn
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"

@@ -6,7 +6,7 @@ locals {
   }
   service_name = "sp-clothing"
   lambdas = toset(
-    [for file_name in fileset(path.module, "../dist/*.zip")
+    [for file_name in fileset(path.module, "../../../dist/*.zip")
       : replace(basename(file_name), ".zip", "")]
   )
 }

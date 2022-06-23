@@ -16,13 +16,18 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-module "api-gateway" {
-  source = "./modules/api-gateway"
-}
-
-
 module "lambda" {
   source = "./modules/lambda"
 }
 
+output "debug" {
+  value = module.lambda.aws_lambda_functions
+}
 
+module "api-gateway" {
+  depends_on = [
+    module.lambda
+  ]
+  source = "./modules/api-gateway"
+  aws_lambda_functions = module.lambda.aws_lambda_functions
+}
