@@ -1,5 +1,5 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { OpenAPI, SpClothingAPI } from '../../api';
 import { CartContext } from '../../context/CartContext';
 
@@ -7,6 +7,7 @@ export const PaymentsForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const { cartItems } = useContext(CartContext);
+	const [showSuccess, setShowSuccess] = useState(false);
 
 	const api = new SpClothingAPI(OpenAPI);
 
@@ -30,6 +31,12 @@ export const PaymentsForm = () => {
 	console.log(cartItems);
 
 	const calculateTotal = () => cartItems!.reduce((total, curr) => (total += curr.item.price), 0);
+
+	useEffect(() => {
+		if (showSuccess) {
+			setTimeout(() => setShowSuccess(false), 3000);
+		}
+	}, [showSuccess]);
 
 	const handlePayment = async (e: any) => {
 		e.preventDefault();
@@ -59,7 +66,10 @@ export const PaymentsForm = () => {
 				// });
 				console.log(response);
 
-				if (response.success) console.log('success!!');
+				if (response.success) {
+					console.log('success!!');
+					setShowSuccess(true);
+				}
 			} catch (e) {
 				console.log('Error', e);
 			}
@@ -69,13 +79,18 @@ export const PaymentsForm = () => {
 	};
 
 	return (
-		<form onSubmit={handlePayment} className="w-[700px]">
-			<fieldset className="FormGroup">
-				<div className="FormRow">
-					<CardElement options={CARD_OPTIONS} />
-				</div>
-			</fieldset>
-			<button>Pay</button>
-		</form>
+		<>
+			<form onSubmit={handlePayment} className="w-[700px]">
+				<fieldset className="FormGroup">
+					<div className="FormRow">
+						<CardElement options={CARD_OPTIONS} />
+					</div>
+				</fieldset>
+				<button>Pay</button>
+			</form>
+			<div className={`flex items-center justify-center bg-green-500 text-white rounded-full px-5 py-[0.4rem] text-lg transition-opacity duration-200 ${showSuccess ? 'opacity-100' : 'opacity-0'}`}>
+				Success
+			</div>
+		</>
 	);
 };
