@@ -60,16 +60,17 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
 resource "aws_lambda_function" "lambda" {
   for_each    = local.lambdas
 
-  filename      = "../dist/${each.value}.zip"
+  filename      = "./../dist/${each.value}.zip"
   function_name = "${each.value}-${terraform.workspace}"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "${each.value}.handler"
-  source_code_hash = filebase64sha256("../dist/${each.value}.zip")
+  source_code_hash = filebase64sha256("./../dist/${each.value}.zip")
   runtime = "nodejs14.x"
   
   environment {
     variables = {
-      environment = "${terraform.workspace}"
+      environment = "${terraform.workspace}",
+      stripe_secret_key =  var.stripe_secret_key
     }
   }
 }

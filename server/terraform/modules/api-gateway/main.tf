@@ -105,3 +105,11 @@ resource "aws_lambda_permission" "api-gateway-invoke-payment-lambda" {
 
   source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
 }
+
+resource "aws_lambda_permission" "api-gateway-invoke-payment-lambda-from-api-gateway-test" {
+  statement_id  = "AllowAPIGatewayInvokeFromApiGatewayTest"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["payment"].arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn = replace("${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*", "//dev//", "/test-invoke-stage/")
+}

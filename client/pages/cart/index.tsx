@@ -1,16 +1,19 @@
+import Link from 'next/link';
 import { useContext } from 'react';
 import CartItem from '../../components/CartItem/CartItem';
 import Layout from '../../components/Layout/Layout';
 import { CartContext } from '../../context/CartContext';
 import ContentfulApi from '../../utils/ContentfulApi';
 import { Page } from '../../utils/interfaces';
-
 interface Props {
 	cartPage: Page;
 }
 
 const Cart: React.FC<Props> = ({ cartPage }) => {
 	const { cartItems } = useContext(CartContext);
+
+	const calculateTotal = () => cartItems!.reduce((total, curr) => (total += curr.item.price), 0);
+
 	return (
 		<Layout seo={cartPage.seo}>
 			<div className="flex flex-col items-center w-full">
@@ -29,10 +32,15 @@ const Cart: React.FC<Props> = ({ cartPage }) => {
 					)}
 				</div>
 				{cartItems && (
-					<div className="flex flex-row items-center justify-between w-[700px]">
-						<p>Total</p>
-						<p>£500</p>
-					</div>
+					<>
+						<div className="flex flex-row items-center justify-between w-[700px]">
+							<p>Total</p>
+							<p>£{calculateTotal()}</p>
+						</div>
+						<Link href="/checkout" passHref>
+							<button className="w-[700px] bg-black text-white p-2 mt-3 rounded-md">Checkout</button>
+						</Link>
+					</>
 				)}
 			</div>
 		</Layout>

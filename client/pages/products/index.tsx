@@ -13,6 +13,7 @@ export interface ProductData {
 	description: string;
 	name: string;
 	slug: string;
+	price: number;
 	imageCollection: imageCollectionData;
 	seo: SEO;
 	sizeList: { sizes: number[] };

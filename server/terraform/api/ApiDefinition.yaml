@@ -2,25 +2,18 @@ openapi: 3.0.0
 info:
   version: "1.0"
   title: "SP Clothing"
-schemes:
-  - https
+
+servers:
+  - url: "https://lkcayvfz2k.execute-api.eu-west-1.amazonaws.com/dev"
+    description: Dev environment used by backend developers
 
 paths:
   /payment:
     $ref: "./paths/Payment.yaml"
 
-definitions:
-  Payment:
-    $ref: "./definitions/Payment.yaml"
-  PaymentResponse:
-    $ref: "./definitions/PaymentResponse.yaml"
-# securityDefinitions:
-#   authorizer:
-#     type: apiKey
-#     name: Authorization
-#     in: header
-#     x-amazon-apigateway-authtype: cognito_user_pools
-#     x-amazon-apigateway-authorizer:
-#       type: cognito_user_pools
-#       providerARNs:
-#         - ${cognito_user_pool_arn}
+components:
+  schemas:
+    Payment:
+      $ref: "./definitions/Payment.yaml"
+    PaymentResponse:
+      $ref: "./definitions/PaymentResponse.yaml"

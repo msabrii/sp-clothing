@@ -29,6 +29,7 @@ export default class ContentfulApi {
 						name
 						description
 						slug
+						price
 						imageCollection(preview: false) {
 							items {
 								title
@@ -84,6 +85,7 @@ export default class ContentfulApi {
 						}
 						name
 						description
+						price
 						sizeList {
 							sizes
 						}

@@ -1,6 +1,11 @@
-properties:
-  name:
-    type: string
-
+type: object
 required:
-  - name
+  - amount
+
+properties:
+  amount:
+    type: number
+  domain:
+    type: string
+  id:
+    type: string

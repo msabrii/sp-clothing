@@ -12,12 +12,19 @@ terraform {
     }
 }
 
+variable "TF_VAR_STRIPE_SECRET_KEY" {
+  description = "stripe secret access key"
+  type = string
+  sensitive = true
+}
+
 provider "aws" {
   region = "eu-west-1"
 }
 
 module "lambda" {
   source = "./modules/lambda"
+  stripe_secret_key = var.TF_VAR_STRIPE_SECRET_KEY
 }
 
 output "debug" {
@@ -31,3 +38,7 @@ module "api-gateway" {
   source = "./modules/api-gateway"
   aws_lambda_functions = module.lambda.aws_lambda_functions
 }
+
+# output "STRIPE_SECRET_KEY" {
+#   value = var.STRIPE_SECRET_KEY
+# }

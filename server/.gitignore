@@ -31,3 +31,5 @@ yarn-error.log*
 
 .terraform.lock.hcl
 .terraform
+
+terraform/secret.tfvars

@@ -1,3 +1,7 @@
+type: object
+
 properties:
-  name:
+  message:
     type: string
+  success:
+    type: boolean
