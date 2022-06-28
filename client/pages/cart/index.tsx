@@ -57,8 +57,8 @@ const Cart: React.FC<Props> = ({ cartPage }) => {
 
 export default Cart;
 
-export async function getStaticProps({ locale }) {
-	const cartPage = await ContentfulApi.getPageBySlug('cart', locale);
+export async function getStaticProps(props: { locale: any }) {
+	const cartPage = await ContentfulApi.getPageBySlug('cart', props.locale);
 
 	// Add this with fallback: "blocking"
 	// So that if we do not have a cartPage on production,
