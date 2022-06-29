@@ -28,7 +28,6 @@ export const PaymentsForm = () => {
 			},
 		},
 	};
-	console.log(cartItems);
 
 	const calculateTotal = () => cartItems!.reduce((total, curr) => (total += curr.item.price), 0);
 

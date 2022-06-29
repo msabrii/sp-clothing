@@ -1,11 +1,10 @@
-import Link from 'next/link';
 import { useContext, useState } from 'react';
 import CartItem from '../../components/CartItem/CartItem';
+import Checkout from '../../components/Checkout/Checkout';
 import Layout from '../../components/Layout/Layout';
 import { CartContext } from '../../context/CartContext';
 import ContentfulApi from '../../utils/ContentfulApi';
 import { Page } from '../../utils/interfaces';
-import Checkout from '../../components/Checkout/Checkout';
 interface Props {
 	cartPage: Page;
 }
@@ -36,7 +35,7 @@ const Cart: React.FC<Props> = ({ cartPage }) => {
 						)}
 					</div>
 				)}
-				{cartItems && !checkout ? (
+				{cartItems && !checkout && (
 					<>
 						<div className="flex flex-row items-center justify-between w-[700px]">
 							<p>Total</p>
@@ -47,9 +46,8 @@ const Cart: React.FC<Props> = ({ cartPage }) => {
 							Checkout
 						</button>
 					</>
-				) : (
-					<Checkout />
 				)}
+				{cartItems && checkout && <Checkout />}
 			</div>
 		</Layout>
 	);
