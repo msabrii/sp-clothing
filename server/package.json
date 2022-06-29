@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "init": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform init",
-    "apply": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform apply"
+    "workspace-dev": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform workspace select dev",
+    "plan": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform plan",
+    "apply": "npm run build && cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform apply -var-file=secret.tfvars",
+    "destroy": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform destroy",
+    "build": "webpack --config webpack.config.js",
+    "swagger-bundle": "cd terraform/api && swagger-cli bundle ApiDefinition.yaml -t yaml -o ApiDefinitionBundled.yaml"
   },
   "author": "Ameer Sabri & Andrew Peliza",
   "license": "ISC",
@@ -17,6 +22,8 @@
     "aws-sdk": "^2.977.0",
     "cross-env": "^7.0.3",
     "middy": "^0.28.2",
+    "stripe": "^9.10.0",
+    "swagger-cli": "^4.0.4",
     "ts-loader": "^8.0.4",
     "typescript": "^4.0.3",
     "uuid": "^8.3.2",

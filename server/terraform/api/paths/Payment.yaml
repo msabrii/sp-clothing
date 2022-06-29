@@ -1,0 +1,61 @@
+post:
+  description: Make a payment via stripe
+  summary: Make a payment via stripe
+  responses:
+    "200":
+      description: Returned when valid credentials have been provided
+      content:
+        application/json:
+          schema:
+            $ref: "../ApiDefinition.yaml#/components/schemas/PaymentResponse"
+          example: { "message": "Successful!", "success": true }
+  x-amazon-apigateway-integration:
+    uri: ${payment_lambda_arn}
+    passthroughBehavior: "when_no_match"
+    httpMethod: "POST"
+    type: "aws_proxy"
+  parameters: []
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../ApiDefinition.yaml#/components/schemas/Payment"
+options:
+  summary: CORS support
+  tags:
+    - Payments
+  description: |
+    Enable CORS by returning correct headers
+  consumes:
+    - application/json
+  produces:
+    - application/json
+  x-amazon-apigateway-integration:
+    type: mock
+    requestTemplates:
+      application/json: |
+        {
+          "statusCode" : 200
+        }
+    responses:
+      "default":
+        statusCode: "200"
+        responseParameters:
+          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+          method.response.header.Access-Control-Allow-Methods: "'*'"
+          method.response.header.Access-Control-Allow-Origin: "'*'"
+          # method.response.header.Strict-Transport-Security: "'max-age=63072000; includeSubDomains; preload'"
+        responseTemplates:
+          application/json: |
+            {}
+  responses:
+    200:
+      description: Default response for CORS method
+      headers:
+        Access-Control-Allow-Headers:
+          type: "string"
+        Access-Control-Allow-Methods:
+          type: "string"
+        Access-Control-Allow-Origin:
+          type: "string"

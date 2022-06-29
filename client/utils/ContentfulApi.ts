@@ -29,6 +29,7 @@ export default class ContentfulApi {
 						name
 						description
 						slug
+						price
 						imageCollection(preview: false) {
 							items {
 								title
@@ -84,6 +85,7 @@ export default class ContentfulApi {
 						}
 						name
 						description
+						price
 						sizeList {
 							sizes
 						}
@@ -114,7 +116,7 @@ export default class ContentfulApi {
 		return productCollection.items[0];
 	}
 
-	static async getPageBySlug(slug: string, locale: string, locales: string[]) {
+	static async getPageBySlug(slug: string, locale: string, locales?: string[]) {
 		const query = gql`
 			query getPageBySlug($slug: String, $locale: String, $locales: [String]) {
 				pageCollection(where: { availability_contains_some: $locales, slug: $slug }, locale: $locale, limit: 1) {

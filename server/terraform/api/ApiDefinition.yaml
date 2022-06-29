@@ -1,0 +1,19 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "SP Clothing"
+
+servers:
+  - url: "https://lkcayvfz2k.execute-api.eu-west-1.amazonaws.com/dev"
+    description: Dev environment used by backend developers
+
+paths:
+  /payment:
+    $ref: "./paths/Payment.yaml"
+
+components:
+  schemas:
+    Payment:
+      $ref: "./definitions/Payment.yaml"
+    PaymentResponse:
+      $ref: "./definitions/PaymentResponse.yaml"

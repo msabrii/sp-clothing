@@ -13,6 +13,7 @@ export interface ProductData {
 	description: string;
 	name: string;
 	slug: string;
+	price: number;
 	imageCollection: imageCollectionData;
 	seo: SEO;
 	sizeList: { sizes: number[] };
@@ -36,8 +37,8 @@ const Products: FC<Props> = ({ productPage, products }) => {
 
 export default Products;
 
-export async function getStaticProps() {
-	const productPage = await ContentfulApi.getPageBySlug('products');
+export async function getStaticProps(props: { locale: any }) {
+	const productPage = await ContentfulApi.getPageBySlug('products', props.locale);
 	const products = await ContentfulApi.getAllProducts();
 	// Add this with fallback: "blocking"
 	// So that if we do not have a post on production,

@@ -26,7 +26,6 @@ export default Page;
 
 export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 	const page = await ContentfulApi.getPageBySlug(params!.slug![0], locale!);
-
 	// Add this with fallback: "blocking"
 	// So that if we do not have a page on production,
 	// the 404 is served
@@ -39,11 +38,10 @@ export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-	const customPages = ['cart', 'products'];
+	const customPages = ['products', 'cart'];
 
 	const localePaths = locales!.flatMap(async (locale) => {
 		const pageCollection = await ContentfulApi.getAllPages(false, locale);
-
 		return pageCollection.items
 			.filter((page: any) => {
 				if (customPages.includes(page.slug)) return false;

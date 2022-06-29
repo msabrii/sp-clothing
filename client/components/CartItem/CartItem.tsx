@@ -8,7 +8,7 @@ const CartItem: React.FC<Props> = ({ item, size }) => {
 			</div>
 			<div className="flex flex-col justify-evenly">
 				<p>{item.name}</p>
-				<p>Price £500</p>
+				<p>Price £{item.price}</p>
 				<p>Size UK {size}</p>
 			</div>
 		</li>
