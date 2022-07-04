@@ -11,8 +11,7 @@
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook",
 		"swagger-bundle": "cd ../server/terraform/api && swagger-cli bundle ApiDefinition.yaml -t yaml -o ApiDefinitionBundled.yaml",
-		"generate": "npm run swagger-bundle && openapi --input ../server/terraform/api/ApiDefinitionBundled.yaml --output ./api --client axios --name SpClothingAPI --indent 2",
-		"generate2": "openapi-generator-cli generate -i ../server/terraform/api/ApiDefinitionBundled.yaml -g typescript-axios -o api --additional-properties=enumPropertyNaming=UPPERCASE,fileNaming=kebab-case"
+		"generate": "openapi-generator-cli generate -i ../server/terraform/api/ApiDefinitionBundled.yaml -g typescript-axios -o api --additional-properties=enumPropertyNaming=UPPERCASE,fileNaming=kebab-case"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.1.1",
