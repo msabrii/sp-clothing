@@ -1,8 +1,3 @@
-# data "archive_file" "lambda_zip" {
-#     type        = "zip"
-#     source_dir  = "./../../../../../dist/preSignUp/"
-#     output_path = "preSignUp.zip"
-# }
 
 resource "aws_iam_role" "iam_for_lambda" {
   name = "cognito_pre_signup_handler_role"
