@@ -9,12 +9,19 @@ resource "aws_cognito_user_pool" "user_pool"{
     require_symbols = false
     temporary_password_validity_days = 7
   }
+  account_recovery_setting {
+    recovery_mechanism {
+      name     = "admin_only"
+      priority = 1
+    }
+  }
   email_configuration {
     email_sending_account = "COGNITO_DEFAULT"
   }
   lambda_config {
-    pre_sign_up = var.aws_lambda_functions["preSignUp"].arn
+    pre_sign_up = module.cognito-triggers.pre_sign_up_lambda_arn
   }
+  
 }
 
 resource "aws_cognito_user_pool_domain" "main" {
@@ -53,4 +60,8 @@ resource "aws_cognito_identity_provider" "google_provider" {
     picture = "picture"
     username = "sub"
   }
+}
+
+module "cognito-triggers" {
+  source = "./modules/cognito-triggers"
 }

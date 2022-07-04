@@ -5,7 +5,3 @@ variable google_client_secret {
 variable google_client_id {
     type = string
 }
-
-variable "aws_lambda_functions" {
-    type = map
-}

@@ -37,21 +37,21 @@ provider "aws" {
 module "lambda" {
   source = "./modules/lambda"
   stripe_secret_key = var.TF_VAR_STRIPE_SECRET_KEY
+  depends_on = [
+    module.cognito
+  ]
+  cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
 }
 
 module "cognito" {
   source = "./modules/cognito"
-  depends_on = [
-    module.lambda
-  ]
   google_client_id = var.TF_VAR_SP_GOOGLE_CLIENT_ID
   google_client_secret = var.TF_VAR_SP_GOOGLE_CLIENT_SECRET
-  aws_lambda_functions = module.lambda.aws_lambda_functions
 }
 
-# output "debug" {
-#   value = module.lambda.aws_lambda_functions
-# }
+output "debug" {
+  value = module.lambda.aws_lambda_functions
+}
 
 module "api-gateway" {
   depends_on = [
