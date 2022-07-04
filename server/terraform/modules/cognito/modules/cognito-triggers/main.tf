@@ -33,12 +33,7 @@ resource "aws_iam_policy" "cognito_permissions_for_lambda" {
   "Statement": [
     {
       "Action": [
-        "cognito-idp:AdminAddUserToGroup",
-        "cognito-idp:AdminUpdateUserAttributes",
-        "cognito-idp:ListUsers",
-        "cognito-idp:AdminLinkProviderForUser",
-        "cognito-idp:AdminCreateUser",
-        "cognito-idp:AdminSetUserPassword",
+        "cognito-idp:*",
         "cloudwatch:*",
         "logs:*"
       ],
@@ -51,7 +46,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "trigger-policy-attach" {
-  role       = aws_iam_role.iam_for_lambda.name
+  role       = aws_iam_role.iam_for_lambda.id
   policy_arn = aws_iam_policy.cognito_permissions_for_lambda.arn
 }
 
