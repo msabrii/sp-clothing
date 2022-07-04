@@ -12,13 +12,14 @@ import {
 import Stripe from "stripe";
 import { HttpStatusCode } from "../constants/httpStatusCodes";
 
-// import { getAwsCognitoClaim } from "../helpers/awsCognitoClaims";
+import {
+  AwsCognitoClaim,
+  getAwsCognitoClaim,
+} from "../helpers/awsCognitoClaims";
 
-// export const deps = {
-//   docClient: () =>
-//     new aws.DynamoDB.DocumentClient({ convertEmptyValues: true }),
-//   getAwsCognitoClaim: getAwsCognitoClaim,
-// };
+export const deps = {
+  getAwsCognitoClaim: getAwsCognitoClaim,
+};
 
 // const tableName = `users_table_${process.env.environment}`;
 
@@ -64,6 +65,18 @@ const processRequest = async (
 
 export const run = async (event: Payment) => {
   try {
+    const cognitoEmail = deps.getAwsCognitoClaim(
+      event.requestContext,
+      AwsCognitoClaim.Email
+    );
+    const username = deps.getAwsCognitoClaim(
+      event.requestContext,
+      AwsCognitoClaim.Username
+    );
+    console.log(cognitoEmail, username);
+    if (!cognitoEmail || !username) {
+      return new Response(HttpStatusCode.Unauthorized, `Unauthorized`);
+    }
     // const email = deps.getAwsCognitoClaim(
     //   event.requestContext,
     //   AwsCognitoClaim.Email

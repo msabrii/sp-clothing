@@ -21,16 +21,15 @@ post:
       application/json:
         schema:
           $ref: "../ApiDefinition.yaml#/components/schemas/Payment"
+  security:
+    - authorizer: []
+
 options:
   summary: CORS support
   tags:
     - Payments
   description: |
     Enable CORS by returning correct headers
-  consumes:
-    - application/json
-  produces:
-    - application/json
   x-amazon-apigateway-integration:
     type: mock
     requestTemplates:
@@ -45,7 +44,6 @@ options:
           method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
           method.response.header.Access-Control-Allow-Methods: "'*'"
           method.response.header.Access-Control-Allow-Origin: "'*'"
-          # method.response.header.Strict-Transport-Security: "'max-age=63072000; includeSubDomains; preload'"
         responseTemplates:
           application/json: |
             {}
@@ -53,9 +51,12 @@ options:
     200:
       description: Default response for CORS method
       headers:
-        Access-Control-Allow-Headers:
-          type: "string"
-        Access-Control-Allow-Methods:
-          type: "string"
         Access-Control-Allow-Origin:
-          type: "string"
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string

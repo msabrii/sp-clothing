@@ -9,6 +9,7 @@ data "template_file" api_swagger{
   vars = {
     payment_lambda_arn  = var.aws_lambda_functions["payment"].invoke_arn
     api_gateway_role_arn = aws_iam_role.iam_for_apigw.arn
+    cognito_user_pool_arn = var.cognito_user_pool_arn
   }
 }
 
