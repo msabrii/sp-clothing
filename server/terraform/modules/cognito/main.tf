@@ -64,4 +64,5 @@ resource "aws_cognito_identity_provider" "google_provider" {
 
 module "cognito-triggers" {
   source = "./modules/cognito-triggers"
+  cognito_user_pool_arn = aws_cognito_user_pool.user_pool.arn
 }
