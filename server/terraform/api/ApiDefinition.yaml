@@ -10,6 +10,10 @@ servers:
 paths:
   /payment:
     $ref: "./paths/Payment.yaml"
+  /sign-in:
+    $ref: "./paths/SignIn.yaml"
+  /sign-up:
+    $ref: "./paths/SignUp.yaml"
 
 components:
   schemas:
@@ -17,6 +21,16 @@ components:
       $ref: "./definitions/Payment.yaml"
     PaymentResponse:
       $ref: "./definitions/PaymentResponse.yaml"
+    SignInRequest:
+      $ref: "./definitions/SignInRequest.yaml"
+    SignInResponse:
+      $ref: "./definitions/SignInResponse.yaml"
+    ProfileResponse:
+      $ref: "./definitions/ProfileResponse.yaml"
+    ErrorMessageWrapper:
+      $ref: "./definitions/ErrorMessageWrapper.yaml"
+    MessageWrapper:
+      $ref: "./definitions/MessageWrapper.yaml"
   securitySchemes:
     authorizer:
       type: apiKey

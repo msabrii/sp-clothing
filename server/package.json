@@ -9,7 +9,7 @@
     "plan": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform plan -var-file=secret.tfvars",
     "apply": "npm run build && cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform apply -var-file=secret.tfvars",
     "destroy": "cd terraform && cross-env-shell AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY terraform destroy",
-    "build": "webpack --config webpack.config.js",
+    "build": "npm run swagger-bundle && webpack --config webpack.config.js",
     "swagger-bundle": "cd terraform/api && swagger-cli bundle ApiDefinition.yaml -t yaml -o ApiDefinitionBundled.yaml",
     "process-outputs": "cd terraform && cross-env-shell TF_WORKSPACE=dev AWS_ACCESS_KEY=$TF_VAR_SP_AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$TF_VAR_SP_AWS_SECRET_ACCESS_KEY node processOutputs.js"
   },

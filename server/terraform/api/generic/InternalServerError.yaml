@@ -1,0 +1,6 @@
+description: Returned when server has failed in an unexpected way
+content:
+  application/json:
+    schema:
+      $ref: "./../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
+    example: { error: "Internal Server error", data: null }

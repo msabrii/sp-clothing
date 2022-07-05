@@ -1,0 +1,14 @@
+description: Users Cognito profile does not meet the criteria to fire the request (missing contact details)
+content:
+  application/json:
+    schema:
+      $ref: "./../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
+    examples:
+      "Email confirmation required":
+        value:
+          error: "User needs to verify their email before attempting contact"
+          data: null
+      "No valid contact methods":
+        value:
+          error: "User needs to have at least one valid contact method"
+          data: null

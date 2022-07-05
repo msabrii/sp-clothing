@@ -1,0 +1,21 @@
+type: object
+
+properties:
+  error:
+    oneOf:
+      - type: string
+        description: Error message
+        nullable: false
+      - type: array
+        description: A list of error messages
+        items:
+          type: string
+  data:
+    description: Generic object placeholder - as data is relevant to error message
+    oneOf:
+      - type: object
+        nullable: true
+      - type: array
+        nullable: true
+        items:
+          type: object

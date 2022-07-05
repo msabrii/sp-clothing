@@ -1,0 +1,30 @@
+type: object
+required:
+  - id
+  - email
+  - name
+  - identities
+properties:
+  id:
+    type: string
+    description: Users id within AWS Cognito
+  email:
+    type: string
+    format: email
+    description: Email address
+  name:
+    type: string
+    description: Users first name
+  identities:
+    type: object
+    required:
+      - Google
+    properties:
+      Google:
+        type: string
+        nullable: true
+        description: ID of google account linked to this profile
+  picture:
+    type: string
+    nullable: true
+    description: URL of users profile picture acquired from social provider
