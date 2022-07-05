@@ -1,8 +1,5 @@
 const { exec } = require("child_process");
 const fs = require("fs");
-const dotenv = require("dotenv");
-
-dotenv.config();
 
 exec("terraform output -json", (error, stdout, stderr) => {
   if (error) {
