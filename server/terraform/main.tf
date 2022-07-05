@@ -49,9 +49,6 @@ module "cognito" {
   google_client_secret = var.TF_VAR_SP_GOOGLE_CLIENT_SECRET
 }
 
-output "debug" {
-  value = module.lambda.aws_lambda_functions
-}
 
 module "api-gateway" {
   depends_on = [

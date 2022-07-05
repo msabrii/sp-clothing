@@ -13,7 +13,6 @@ export const PaymentsForm = () => {
 	const { cartItems } = useContext(CartContext);
 
 	const api = new DefaultApi(new Configuration({ apiKey: user && user.signInUserSession.idToken.jwtToken }));
-	console.log(user);
 	const CARD_OPTIONS = {
 		style: {
 			base: {
@@ -56,22 +55,7 @@ export const PaymentsForm = () => {
 					amount: total * 100,
 					id,
 				});
-				// const response = await fetch('https://lkcayvfz2k.execute-api.eu-west-1.amazonaws.com/dev/payment', {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 	},
-				// body: JSON.stringify({
-				// 	amount: total * 100,
-				// 	id,
-				// }),
-				// });
 				console.log(response);
-
-				// if (response.success) {
-				// 	console.log('success!!');
-				// 	setShowSuccess(true);
-				// }
 			} catch (e) {
 				console.log('Error', e);
 			}
