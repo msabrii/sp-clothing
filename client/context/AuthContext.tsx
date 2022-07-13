@@ -1,9 +1,6 @@
-import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth/lib/types';
-import { Amplify, Auth } from 'aws-amplify';
-import React, { createContext, useEffect, useState } from 'react';
-import config from '../auth-config.json';
+import React, { createContext, useState } from 'react';
+import { Configuration, SigninApi } from '../api';
 
-Amplify.configure(config);
 interface Props {
 	children: React.ReactNode;
 }
@@ -11,8 +8,9 @@ interface Props {
 interface AuthInterface {
 	user: any;
 	signIn: (username: string, password: string) => void;
-	signUp: (username: string, password: string) => void;
-	signOut: () => void;
+	// signUp: (username: string, password: string) => void;
+	signInWithCode: (code: string) => void;
+	// signOut: () => void;
 	signInWithGoogle: () => void;
 }
 
@@ -21,13 +19,17 @@ export const AuthContext = createContext<AuthInterface>({} as AuthInterface);
 const AuthContextProvider: React.FC<Props> = ({ children }) => {
 	const [user, setUser] = useState<any | undefined>();
 
-	useEffect(() => {
-		checkUser();
-	}, []);
+	const api = new SigninApi(new Configuration());
+
+	// useEffect(() => {
+	// 	checkUser();
+	// }, []);
 
 	const signInWithGoogle = async () => {
 		try {
-			const user = await Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google });
+			const user = await api.signInGoogleGet('client');
+			console.log(user);
+			window.open(user!.data!, '_blank', 'popup,height=600,width=500,left=400,top=200');
 			setUser(user);
 		} catch (error) {
 			console.log(error);
@@ -36,47 +38,62 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
 
 	const signIn = async (username: string, password: string) => {
 		try {
-			const user = await Auth.signIn(username, password);
-			setUser(user);
+			const user = await api.signInPost({ email: username, password });
+			console.log(user);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const signUp = async (username: string, password: string) => {
+	const signInWithCode = async (code: string) => {
 		try {
-			const test = await Auth.signUp(username, password);
-			console.log(test);
-			setUser(test);
-			// const confirm = await Auth.confirmSignUp(username, password);
-			console.log(confirm);
+			const res = await api.signInWithCodePost({ code, target: 'client' });
+			localStorage.removeItem('loginCode');
+			console.log(res);
+			if (!res) return;
+			localStorage.setItem('accessToken', res.data.access_token);
+			localStorage.setItem('idToken', res.data.id_token);
+			localStorage.setItem('refreshToken', res.data.refresh_token);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const signOut = async () => {
-		await Auth.signOut();
-		setUser(undefined);
-	};
+	// const signUp = async (username: string, password: string) => {
+	// 	try {
+	// 		const test = await Auth.signUp(username, password);
+	// 		console.log(test);
+	// 		setUser(test);
+	// 		// const confirm = await Auth.confirmSignUp(username, password);
+	// 		console.log(confirm);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
-	const checkUser = async () => {
-		try {
-			const user = await Auth.currentAuthenticatedUser();
-			setUser(user);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	// const signOut = async () => {
+	// 	await Auth.signOut();
+	// 	setUser(undefined);
+	// };
+
+	// const checkUser = async () => {
+	// 	try {
+	// 		const user = await Auth.currentAuthenticatedUser();
+	// 		setUser(user);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
 
 	return (
 		<AuthContext.Provider
 			value={{
 				user,
 				signIn,
-				signUp,
+				// signUp,
 				signInWithGoogle,
-				signOut,
+				signInWithCode,
+				// signOut,
 			}}
 		>
 			{children}

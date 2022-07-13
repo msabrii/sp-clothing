@@ -1,15 +1,13 @@
 post:
-  description: User signs in
-  summary: User signs in
-  tags:
-    - Signin
+  description: Endpoint allowing user to sign in with a code passed from the social provider
+  summary: Exchanges social provider code for user session tokens
   responses:
     "200":
-      description: Returned when valid credentials have been provided
+      description: Returned when valid code have been provided
       content:
         application/json:
           schema:
-            $ref: "../ApiDefinition.yaml#/components/schemas/SignInResponse"
+            $ref: "./../definitions/SignInResponse.yaml"
           example:
             {
               "id_token": "eyJraWQiOiJqRGhXTFFlNjNyVGZLWjY2WmwzN1RDNU52VUtJdDhBZk51alNIRDdieTRNPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJjMmUwZDhjYy1lOTM2LTQ1ZTQtODAyYy04Mzk0ZGEzYmJmMDkiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9uWXJoQU9adXIiLCJjb2duaXRvOnVzZXJuYW1lIjoiZGFtaWFucCszQGFwYWRtaS5jb20iLCJvcmlnaW5fanRpIjoiMjMwMWRjNGMtZjY4Zi00ZDNjLWI1ZmUtM2FiOWVlMDhhMGY5IiwiYXVkIjoiNTRpcXEzNWIzNjY4dmkwYXZxc25wcDBiMm4iLCJldmVudF9pZCI6IjRiNmYwNTljLWY4ZmUtNDE1YS04OGI1LTZkZGY3OGQyZmM0ZiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjUyOTQxNDgzLCJleHAiOjE2NTMwMjc4ODMsImlhdCI6MTY1Mjk0MTQ4MywianRpIjoiNGE5NGJiM2ItNDdmNS00NTNmLTg0OTktYTY4YmNkODZiZWMzIiwiZW1haWwiOiJkYW1pYW5wKzNAYXBhZG1pLmNvbSJ9.c9Yli482kAbdTOESd3QOZGyOm0mNecqpJG1sdlhNbQMokt9wZUjs5wmR1Uk0FMCwpjSTD7IsGY9ofWpuP6HepU1mKa-Aq1xqNZA6v2j34Nw98VOnPgRQbNW2LR4Vhfs8ZBfC6aSunKpyxhncp9rmPqndN7uksWvQBRZOasq56xfWcUZZFGn7DfS8H2GVxvi0U8FMqvnaDvNSohSs74GHv025Pp8hXViDwckrOR4YaaAUBG03EXFc-wMEdd0yPLzf_zq69zyKCocsf7RM4KUSCPXPLMywu3xn75zX7SNYuTHwk3-ILA9QM2O2YU8oV1-1qnEEgKHm9LM4UBYz_egDrA",
@@ -18,67 +16,43 @@ post:
               "profile":
                 {
                   "id": "1be09b65-5a67-4b33-ae57-a68f5320a282",
-                  "name": "John Smith",
+                  "email": "john.smith@apadmi.com",
+                  "email_verified": true,
+                  "first_name": "John",
+                  "last_name": "Smith",
+                  "phone": null,
+                  "postcode": null,
                   "identities": [],
                   "picture": null,
+                  "keep_in_touch": "UNKNOWN",
                 },
             }
     "401":
-      description: Returned when invalid credentials have been provided
+      description: Returned when invalid code have been provided
       content:
         application/json:
           schema:
-            $ref: "../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
-          example: { "error": "Invalid credentials", "data": null }
+            $ref: "./../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
+          example:
+            {
+              "error": "Failed to resolve the token, likely token has been used up",
+              "data": null,
+            }
     "500":
       $ref: "./../generic/InternalServerError.yaml"
-
-  x-amazon-apigateway-integration:
-    uri: ${signIn_lambda_arn}
-    passthroughBehavior: "when_no_match"
-    httpMethod: "POST"
-    type: "aws_proxy"
   parameters: []
+  tags:
+    - Signin
 
   requestBody:
     content:
       application/json:
         schema:
-          $ref: "../ApiDefinition.yaml#/components/schemas/SignInRequest"
-
-options:
-  summary: CORS support
-  tags:
-    - Signin
-  description: |
-    Enable CORS by returning correct headers
-  x-amazon-apigateway-integration:
-    type: mock
-    requestTemplates:
-      application/json: |
-        {
-          "statusCode" : 200
-        }
-    responses:
-      "default":
-        statusCode: "200"
-        responseParameters:
-          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
-          method.response.header.Access-Control-Allow-Methods: "'*'"
-          method.response.header.Access-Control-Allow-Origin: "'*'"
-        responseTemplates:
-          application/json: |
-            {}
-  responses:
-    200:
-      description: Default response for CORS method
-      headers:
-        Access-Control-Allow-Origin:
-          schema:
-            type: string
-        Access-Control-Allow-Methods:
-          schema:
-            type: string
-        Access-Control-Allow-Headers:
-          schema:
-            type: string
+          $ref: "./../definitions/SignInWithCodeRequest.yaml"
+        examples:
+          "Sample web request exchanging code":
+            value:
+              {
+                "code": "7fc901d6-faa7-4635-88ab-c2d0afbc4961",
+                "target": "client",
+              }

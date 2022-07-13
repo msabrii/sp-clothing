@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
-	const { signIn, user, signOut, signInWithGoogle } = useContext(AuthContext);
+	const { signIn, user, signInWithGoogle, signInWithCode } = useContext(AuthContext);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -12,6 +12,21 @@ const Login = () => {
 		e.preventDefault();
 		signIn(email, password);
 	};
+
+	useEffect(() => {
+		const handleThirdPartyLogin = () => {
+			const code = localStorage.getItem('loginCode');
+			if (code) {
+				signInWithCode(code);
+			}
+		};
+
+		window.addEventListener('storage', handleThirdPartyLogin);
+
+		return () => {
+			window.removeEventListener('storage', handleThirdPartyLogin);
+		};
+	}, []);
 
 	return (
 		<Layout seo={{ metaTitle: 'Login - SP', metaDescription: 'This is the login/signup page' }}>

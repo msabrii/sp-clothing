@@ -1,7 +1,8 @@
 post:
   description: User signs up
   summary: User signs up
-  tags: Signup
+  tags:
+    - Signup
   responses:
     "200":
       description: Returned when valid credentials have been provided

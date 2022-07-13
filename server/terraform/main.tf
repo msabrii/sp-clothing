@@ -41,6 +41,8 @@ module "lambda" {
     module.cognito
   ]
   cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
+  cognito_app_client_id = module.cognito.cognito_app_client_id
+  cognito_user_pool_id = module.cognito.cognito_user_pool_id
 }
 
 module "cognito" {

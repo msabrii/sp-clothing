@@ -80,6 +80,8 @@ resource "aws_lambda_function" "lambda" {
     variables = {
       environment = "${terraform.workspace}",
       stripe_secret_key =  var.stripe_secret_key
+      cognito_client_id = var.cognito_app_client_id
+      cognito_user_pool_id = var.cognito_user_pool_id
     }
   }
 }

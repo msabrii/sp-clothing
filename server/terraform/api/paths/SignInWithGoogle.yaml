@@ -1,0 +1,59 @@
+get:
+  description: V3 - OAuth2 Redirect - this endpoints redirects user to sign in with Google page, which then calls back to this API
+  summary: Redirection to Google portal, upon successful sign in, user is redirected back to the portal
+  responses:
+    "307":
+      description: Redirection to Google portal, upon successful sign in, user is redirected back to the clientapi
+    "500":
+      $ref: "./../generic/InternalServerError.yaml"
+  x-amazon-apigateway-integration:
+    uri: ${signInWithGoogle_lambda_arn}
+    passthroughBehavior: "when_no_match"
+    httpMethod: "POST"
+    type: "aws_proxy"
+  parameters:
+    - in: query
+      name: target
+      description: Specifies whether user should be redirected to the client, server, or app handlers
+      schema:
+        type: string
+        enum: [client, server, app]
+  tags:
+    - Signin
+
+options:
+  summary: CORS support
+  tags:
+    - Signin
+  description: |
+    Enable CORS by returning correct headers
+  x-amazon-apigateway-integration:
+    type: mock
+    requestTemplates:
+      application/json: |
+        {
+          "statusCode" : 200
+        }
+    responses:
+      "default":
+        statusCode: "200"
+        responseParameters:
+          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+          method.response.header.Access-Control-Allow-Methods: "'*'"
+          method.response.header.Access-Control-Allow-Origin: "'*'"
+        responseTemplates:
+          application/json: |
+            {}
+  responses:
+    200:
+      description: Default response for CORS method
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string
