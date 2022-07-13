@@ -1,0 +1,17 @@
+type: object
+required:
+  - id_token
+  - refresh_token
+  - access_token
+properties:
+  access_token:
+    type: string
+    description: Access Token (JWT) returned by AWS Cognito, may contain relevant information, such as when the session expires (requires use of refresh token), users email etc. More detail available at https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-access-token.html, this token is intended to authenticating future requests as a header to the backend. Expires within 1 day.
+  id_token:
+    type: string
+    description: ID Token (JWT) returned by AWS Cognito, may contain relevant information, such as when the session expires (requires use of refresh token), users email etc. More detail available at https://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-the-id-token.html Expires within 1 day.
+  refresh_token:
+    type: string
+    description: Refresh Token (JWT) returned by AWS Cognito - a token with a long expiry (30 days) which can be user to retrieve new tokens
+  profile:
+    $ref: "./ProfileResponse.yaml"

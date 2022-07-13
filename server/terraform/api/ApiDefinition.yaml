@@ -4,12 +4,22 @@ info:
   title: "SP Clothing"
 
 servers:
-  - url: "https://lkcayvfz2k.execute-api.eu-west-1.amazonaws.com/dev"
+  - url: "https://wgos8zm0ga.execute-api.eu-west-1.amazonaws.com/dev"
     description: Dev environment used by backend developers
 
 paths:
   /payment:
     $ref: "./paths/Payment.yaml"
+  /sign-in:
+    $ref: "./paths/SignIn.yaml"
+  /sign-up:
+    $ref: "./paths/SignUp.yaml"
+  /sign-in-google:
+    $ref: "./paths/SignInWithGoogle.yaml"
+  /sign-in-refresh:
+    $ref: "./paths/SignInRefresh.yaml"
+  /sign-in-with-code:
+    $ref: "./paths/SignInWithCode.yaml"
 
 components:
   schemas:
@@ -17,3 +27,27 @@ components:
       $ref: "./definitions/Payment.yaml"
     PaymentResponse:
       $ref: "./definitions/PaymentResponse.yaml"
+    SignInRequest:
+      $ref: "./definitions/SignInRequest.yaml"
+    SignInResponse:
+      $ref: "./definitions/SignInResponse.yaml"
+    SignInRefreshRequest:
+      $ref: "./definitions/SignInRefreshRequest.yaml"
+    SignInWithCodeRequest:
+      $ref: "./definitions/SignInWithCodeRequest.yaml"
+    ProfileResponse:
+      $ref: "./definitions/ProfileResponse.yaml"
+    ErrorMessageWrapper:
+      $ref: "./definitions/ErrorMessageWrapper.yaml"
+    MessageWrapper:
+      $ref: "./definitions/MessageWrapper.yaml"
+  securitySchemes:
+    authorizer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-amazon-apigateway-authtype: cognito_user_pools
+      x-amazon-apigateway-authorizer:
+        type: cognito_user_pools
+        providerARNs:
+          - ${cognito_user_pool_arn}

@@ -8,7 +8,13 @@ data "template_file" api_swagger{
 
   vars = {
     payment_lambda_arn  = var.aws_lambda_functions["payment"].invoke_arn
+    signIn_lambda_arn  = var.aws_lambda_functions["signIn"].invoke_arn
+    signInWithGoogle_lambda_arn  = var.aws_lambda_functions["signInWithGoogle"].invoke_arn
+    signUp_lambda_arn  = var.aws_lambda_functions["signUp"].invoke_arn
+    signInRefresh_lambda_arn  = var.aws_lambda_functions["signInRefresh"].invoke_arn
+    signInWithCode_lambda_arn  = var.aws_lambda_functions["signInWithCode"].invoke_arn
     api_gateway_role_arn = aws_iam_role.iam_for_apigw.arn
+    cognito_user_pool_arn = var.cognito_user_pool_arn
   }
 }
 
@@ -113,3 +119,54 @@ resource "aws_lambda_permission" "api-gateway-invoke-payment-lambda-from-api-gat
   principal     = "apigateway.amazonaws.com"
   source_arn = replace("${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*", "//dev//", "/test-invoke-stage/")
 }
+
+resource "aws_lambda_permission" "api-gateway-invoke-signIn-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signIn"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api-gateway-invoke-signUp-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signUp"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api-gateway-invoke-signInWithGoogle-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signInWithGoogle"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api-gateway-invoke-signInRefresh-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signInRefresh"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api-gateway-invoke-signInWithCode-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signInWithCode"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+
+
+
+
+

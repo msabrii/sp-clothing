@@ -37,3 +37,5 @@ yarn-error.log*
 
 #api core folder
 /api
+
+auth-config.json

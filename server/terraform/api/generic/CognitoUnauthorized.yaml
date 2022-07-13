@@ -1,0 +1,8 @@
+description: JWT token is missing or could not be used to authorize the requrest
+content:
+  application/json:
+    schema:
+      $ref: "./../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
+    example:
+      error: "Invalid request, missing 'Authorization: Bearer {token}' headers"
+      data: null

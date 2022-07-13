@@ -1,0 +1,11 @@
+type: object
+required:
+  - code
+properties:
+  code:
+    type: string
+    description: One time code provided by the social identity provider (i.e. Facebook), can be used to resolve into user session
+  target:
+    type: string
+    enum: [client, server, app]
+    description: One time code provided by the social identity provider (i.e. Facebook), can be used to resolve into user session

@@ -1,0 +1,12 @@
+
+description: Returned when an invalid request has been made to the backend, whether it is a malformed body, or missing security schema
+content:
+  application/json:
+    example:
+      {
+          error: [
+              "Body does not match schema for content-type \"application/json\" for Request [post /api/v3/contact/agent-enquiry]",
+              "Keyword validation failed: Required property 'agent_id' must be present in the object"
+          ],
+          data:  null,
+      }

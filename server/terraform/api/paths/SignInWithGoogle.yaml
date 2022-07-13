@@ -1,33 +1,30 @@
-post:
-  description: Make a payment via stripe
-  summary: Make a payment via stripe
+get:
+  description: V3 - OAuth2 Redirect - this endpoints redirects user to sign in with Google page, which then calls back to this API
+  summary: Redirection to Google portal, upon successful sign in, user is redirected back to the portal
   responses:
-    "200":
-      description: Returned when valid credentials have been provided
-      content:
-        application/json:
-          schema:
-            $ref: "../ApiDefinition.yaml#/components/schemas/PaymentResponse"
-          example: { "message": "Successful!", "success": true }
+    "307":
+      description: Redirection to Google portal, upon successful sign in, user is redirected back to the clientapi
+    "500":
+      $ref: "./../generic/InternalServerError.yaml"
   x-amazon-apigateway-integration:
-    uri: ${payment_lambda_arn}
+    uri: ${signInWithGoogle_lambda_arn}
     passthroughBehavior: "when_no_match"
     httpMethod: "POST"
     type: "aws_proxy"
-  parameters: []
-
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: "../ApiDefinition.yaml#/components/schemas/Payment"
-  security:
-    - authorizer: []
+  parameters:
+    - in: query
+      name: target
+      description: Specifies whether user should be redirected to the client, server, or app handlers
+      schema:
+        type: string
+        enum: [client, server, app]
+  tags:
+    - Signin
 
 options:
   summary: CORS support
   tags:
-    - Payments
+    - Signin
   description: |
     Enable CORS by returning correct headers
   x-amazon-apigateway-integration:

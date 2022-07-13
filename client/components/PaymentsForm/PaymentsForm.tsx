@@ -1,16 +1,18 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useContext, useEffect, useState } from 'react';
-import { OpenAPI, SpClothingAPI } from '../../api';
+import { Configuration, DefaultApi } from '../../api';
+import { AuthContext } from '../../context/AuthContext';
 import { CartContext } from '../../context/CartContext';
 
 export const PaymentsForm = () => {
 	const stripe = useStripe();
 	const elements = useElements();
-	const { cartItems } = useContext(CartContext);
 	const [showSuccess, setShowSuccess] = useState(false);
 
-	const api = new SpClothingAPI(OpenAPI);
+	const { user } = useContext(AuthContext);
+	const { cartItems } = useContext(CartContext);
 
+	const api = new DefaultApi(new Configuration({ apiKey: user && user.signInUserSession.idToken.jwtToken }));
 	const CARD_OPTIONS = {
 		style: {
 			base: {
@@ -49,26 +51,11 @@ export const PaymentsForm = () => {
 		if (!error) {
 			try {
 				const { id } = paymentMethod;
-				const response = await api.default.postPayment({
+				const response = await api.paymentPost({
 					amount: total * 100,
 					id,
 				});
-				// const response = await fetch('https://lkcayvfz2k.execute-api.eu-west-1.amazonaws.com/dev/payment', {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 	},
-				// body: JSON.stringify({
-				// 	amount: total * 100,
-				// 	id,
-				// }),
-				// });
 				console.log(response);
-
-				if (response.success) {
-					console.log('success!!');
-					setShowSuccess(true);
-				}
 			} catch (e) {
 				console.log('Error', e);
 			}

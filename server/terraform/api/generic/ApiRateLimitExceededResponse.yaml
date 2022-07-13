@@ -1,0 +1,6 @@
+description: Returned when the request has been made too often
+content:
+  application/json:
+    schema:
+      $ref: "./../ApiDefinition.yaml#/components/schemas/ErrorMessageWrapper"
+    example: { "error": "Too many requests", "data": null }

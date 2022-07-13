@@ -18,6 +18,18 @@ variable "TF_VAR_STRIPE_SECRET_KEY" {
   sensitive = true
 }
 
+variable "TF_VAR_SP_GOOGLE_CLIENT_ID" {
+  description = "google client id"
+  type = string
+  sensitive = true
+}
+
+variable "TF_VAR_SP_GOOGLE_CLIENT_SECRET" {
+  description = "google client secret"
+  type = string
+  sensitive = true
+}
+
 provider "aws" {
   region = "eu-west-1"
 }
@@ -25,11 +37,20 @@ provider "aws" {
 module "lambda" {
   source = "./modules/lambda"
   stripe_secret_key = var.TF_VAR_STRIPE_SECRET_KEY
+  depends_on = [
+    module.cognito
+  ]
+  cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
+  cognito_app_client_id = module.cognito.cognito_app_client_id
+  cognito_user_pool_id = module.cognito.cognito_user_pool_id
 }
 
-output "debug" {
-  value = module.lambda.aws_lambda_functions
+module "cognito" {
+  source = "./modules/cognito"
+  google_client_id = var.TF_VAR_SP_GOOGLE_CLIENT_ID
+  google_client_secret = var.TF_VAR_SP_GOOGLE_CLIENT_SECRET
 }
+
 
 module "api-gateway" {
   depends_on = [
@@ -37,8 +58,5 @@ module "api-gateway" {
   ]
   source = "./modules/api-gateway"
   aws_lambda_functions = module.lambda.aws_lambda_functions
+  cognito_user_pool_arn = module.cognito.cognito_user_pool_arn
 }
-
-# output "STRIPE_SECRET_KEY" {
-#   value = var.STRIPE_SECRET_KEY
-# }

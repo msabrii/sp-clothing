@@ -7,7 +7,7 @@ locals {
   service_name = "sp-clothing"
   lambdas = toset(
     [for file_name in fileset(path.module, "../../../dist/*.zip")
-      : replace(basename(file_name), ".zip", "")]
+      : replace(basename(file_name), ".zip", "") if basename(file_name) != "preSignUp.zip"]
   )
 }
 
@@ -38,6 +38,15 @@ resource "aws_iam_policy" "lambda_policy" {
    {
       "Version": "2012-10-17",
       "Statement": [
+         {
+          "Action": [
+            "cognito-idp:*"
+          ],
+          "Effect": "Allow",
+          "Resource": [
+            "${var.cognito_user_pool_arn}"
+          ]
+        },
         {
             "Action": [
                 "logs:CreateLogGroup",
@@ -71,6 +80,8 @@ resource "aws_lambda_function" "lambda" {
     variables = {
       environment = "${terraform.workspace}",
       stripe_secret_key =  var.stripe_secret_key
+      cognito_client_id = var.cognito_app_client_id
+      cognito_user_pool_id = var.cognito_user_pool_id
     }
   }
 }
