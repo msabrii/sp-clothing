@@ -1,16 +1,17 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Layout from '../../components/Layout/Layout';
+import { AuthContext } from '../../context/AuthContext';
 
 const Signup = () => {
-	// const { signUp } = useContext(AuthContext);
+	const { signUp } = useContext(AuthContext);
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const handleSubmit = (e: any) => {
 		e.preventDefault();
-		// signUp(email, password);
+		signUp(email, password);
 	};
 
 	return (

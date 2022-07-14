@@ -20,6 +20,8 @@ paths:
     $ref: "./paths/SignInRefresh.yaml"
   /sign-in-with-code:
     $ref: "./paths/SignInWithCode.yaml"
+  /sign-out:
+    $ref: "./paths/SignOut.yaml"
 
 components:
   schemas:
@@ -35,6 +37,10 @@ components:
       $ref: "./definitions/SignInRefreshRequest.yaml"
     SignInWithCodeRequest:
       $ref: "./definitions/SignInWithCodeRequest.yaml"
+    SignOutRequest:
+      $ref: "./definitions/SignOutRequest.yaml"
+    SignOutResponse:
+      $ref: "./definitions/SignOutResponse.yaml"
     ProfileResponse:
       $ref: "./definitions/ProfileResponse.yaml"
     ErrorMessageWrapper:

@@ -41,8 +41,13 @@ post:
     "500":
       $ref: "./../generic/InternalServerError.yaml"
   parameters: []
+  x-amazon-apigateway-integration:
+    uri: ${signInWithCode_lambda_arn}
+    passthroughBehavior: "when_no_match"
+    httpMethod: "POST"
+    type: "aws_proxy"
   tags:
-    - Signin
+    - Auth
 
   requestBody:
     content:
@@ -56,3 +61,40 @@ post:
                 "code": "7fc901d6-faa7-4635-88ab-c2d0afbc4961",
                 "target": "client",
               }
+
+options:
+  summary: CORS support
+  tags:
+    - Auth
+  description: |
+    Enable CORS by returning correct headers
+  x-amazon-apigateway-integration:
+    type: mock
+    requestTemplates:
+      application/json: |
+        {
+          "statusCode" : 200
+        }
+    responses:
+      "default":
+        statusCode: "200"
+        responseParameters:
+          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+          method.response.header.Access-Control-Allow-Methods: "'*'"
+          method.response.header.Access-Control-Allow-Origin: "'*'"
+        responseTemplates:
+          application/json: |
+            {}
+  responses:
+    200:
+      description: Default response for CORS method
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string

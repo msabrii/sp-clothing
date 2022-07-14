@@ -13,6 +13,7 @@ data "template_file" api_swagger{
     signUp_lambda_arn  = var.aws_lambda_functions["signUp"].invoke_arn
     signInRefresh_lambda_arn  = var.aws_lambda_functions["signInRefresh"].invoke_arn
     signInWithCode_lambda_arn  = var.aws_lambda_functions["signInWithCode"].invoke_arn
+    signOut_lambda_arn  = var.aws_lambda_functions["signOut"].invoke_arn    
     api_gateway_role_arn = aws_iam_role.iam_for_apigw.arn
     cognito_user_pool_arn = var.cognito_user_pool_arn
   }
@@ -160,6 +161,15 @@ resource "aws_lambda_permission" "api-gateway-invoke-signInWithCode-lambda" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
   function_name = var.aws_lambda_functions["signInWithCode"].arn
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api-gateway-invoke-signOut-lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = var.aws_lambda_functions["signOut"].arn
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_api_gateway_deployment.sp_api_gateway_deployment.execution_arn}/*/*"

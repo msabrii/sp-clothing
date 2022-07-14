@@ -1,0 +1,9 @@
+type: object
+required:
+  - signed_out
+properties:
+  signed_out:
+    type: boolean
+    description: States whether the user has been signed out successfully
+  message:
+    type: string

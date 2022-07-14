@@ -2,7 +2,7 @@ post:
   description: User signs up
   summary: User signs up
   tags:
-    - Signup
+    - Auth
   responses:
     "200":
       description: Returned when valid credentials have been provided
@@ -57,7 +57,7 @@ post:
 options:
   summary: CORS support
   tags:
-    - Signup
+    - Auth
   description: |
     Enable CORS by returning correct headers
   x-amazon-apigateway-integration:

@@ -1,13 +1,6 @@
-import {
-  AuthenticationDetails,
-  CognitoUser,
-  CognitoUserPool,
-} from "amazon-cognito-identity-js";
 import { APIGatewayEventRequestContext } from "aws-lambda";
+import { CognitoIdentityServiceProvider } from "aws-sdk";
 import middy from "middy";
-
-import { Response } from "../models/response";
-
 import {
   cors,
   httpErrorHandler,
@@ -16,8 +9,8 @@ import {
   jsonBodyParser,
 } from "middy/middlewares";
 import { HttpStatusCode } from "../constants/httpStatusCodes";
-
 import { getAwsCognitoClaim } from "../helpers/awsCognitoClaims";
+import { Response } from "../models/response";
 
 export const deps = {
   getAwsCognitoClaim: getAwsCognitoClaim,
@@ -31,68 +24,41 @@ export interface SignInRequest {
   };
 }
 
-// const processRequest = async (
-//   amount: number,
-//   id: string,
-//   domain: string
-// ): Promise<{ message: string; success: boolean } | undefined> => {
-//   try {
-//   } catch (error) {}
-// };
-
 export const run = async (event: SignInRequest) => {
   try {
     console.log(event);
+    const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
     const { email, password } = event.body;
     if (!email || !password)
       return new Response(HttpStatusCode.BadRequest, {
         message: "Email/Password is missing",
       });
-    // const response = await processRequest(amount, id, domain);
-    // const payload = {
-    //   AuthFlow: "ADMIN_USER_PASSWORD_AUTH",
-    //   UserPoolId: process.env.cognito_user_pool_id,
-    //   ClientId: process.env.cognito_client_id,
-    //   AuthParameters: {
-    //     USERNAME: email,
-    //     PASSWORD: password,
-    //   },
-    // };
 
-    const authenticationDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
-    });
-    const poolData = {
-      UserPoolId: process.env.cognito_user_pool_id,
+    const params: any = {
+      AuthFlow: "ADMIN_USER_PASSWORD_AUTH",
       ClientId: process.env.cognito_client_id,
+      UserPoolId: process.env.cognito_user_pool_id,
+      AuthParameters: {
+        USERNAME: email,
+        PASSWORD: password,
+      },
     };
-    const userPool = new CognitoUserPool(poolData);
-    const userData = {
-      Username: email,
-      Pool: userPool,
-    };
-    const cognitoUser = new CognitoUser(userData);
-    const result = await new Promise(function (resolve, reject) {
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-          const accessToken = result.getAccessToken().getJwtToken();
-          const refreshToken = result.getRefreshToken().getToken();
-          const idToken = result.getIdToken().getJwtToken();
-          resolve({ accessToken, idToken, refreshToken });
-        },
 
-        onFailure: function (err) {
-          console.warn(err);
-          reject("Error has occured");
-        },
+    const result = await new Promise(function (resolve, reject) {
+      cognitoIdentityServiceProvider.adminInitiateAuth(params, (err, data) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          console.warn(data);
+          resolve(data.AuthenticationResult);
+        }
       });
     });
-    console.log(result);
     return new Response(HttpStatusCode.OK, result);
   } catch (error) {
-    console.log(error);
-    return new Response(HttpStatusCode.InternalServerError);
+    if (error === "Incorrect username or password.")
+      return new Response(HttpStatusCode.Unauthorized, error);
+    return new Response(HttpStatusCode.InternalServerError, error);
   }
 };
 

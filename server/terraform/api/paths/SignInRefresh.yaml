@@ -32,8 +32,13 @@ post:
     "500":
       $ref: "./../generic/InternalServerError.yaml"
   parameters: []
+  x-amazon-apigateway-integration:
+    uri: ${signInRefresh_lambda_arn}
+    passthroughBehavior: "when_no_match"
+    httpMethod: "POST"
+    type: "aws_proxy"
   tags:
-    - Signin
+    - Auth
 
   requestBody:
     content:
@@ -46,3 +51,40 @@ post:
               {
                 "refresh_token": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.KEfhs2x67jR9577RZtWhqRjBr6m4AABz3QVhfaBKkbCFZ-qsd6Yb-2bJJsLv2qrI3YlN3wlnMZy7vpsZQ6Fe225VQCnja_wSQvhajJl39VokE75bp_vgl0LdZZqWQtdtWC8nhma1DB0flN0rkzuJz_bTx5Jrr01ZjJ10RVrhxxA5D5UY6ObCsAClB4LSvntuU98fbu5bJmVwP39tzXSAo9n5_Ii1lamUrnmaVb_jRRRW6pwu3e_eVZ_DtSly9pt0Q5NvcOmh_GCIj8C-8h5AH_GA8naYEULqP8tzJFOw3ckPQeHI-f3gCDyRhowQFTfoKNhtQNPqygrYy_PEcaTWCQ.QrpXCFNPRTkeWJ4Q.nOlVL9bNipDLKmhJR-vBmIXA7Tc91OTxoHDecMaS8jGsZ6Srp0V7wMozwkm0pXZL-NVELcoWGMsAHlfWWPKgQ9TZdkhAdiQuxNNQDOzThZgCFSMHpO8aFvHYSyjPWqQhz4aGPe_7lY9EDpQ6jttFTJye84zL-QnQqIVYqCSkUDsuYg39HlyRmQfJNyMXAE5zULTIsB37nqtmbQClp99C38viOeg3s7BwnMXdaPx3B7rtMHs95gDeBD5gnZCo-Qj6TwU0bvSv7PB81M9lsC91oJ-_UISfkLxeDWVyRs96WNSCDPqb41vfpXhZqjZMit90WbKzPq5mOOmioJj7ds4s42ZLjo0Q4IxYRfu51FAdklZ03tIjXMz7YtJEHxww98xew2pepTplv3VceZ_0mR6UFYVHFCa1FR0G5-6ZqoHtqPeEnDEmAY0yBKXP7qre2W8pR_JFoSOiu7pyuCk4DwIfUAK9BomalmjU17C14pdqJ7Mn77YBUEeye8FTr2s2F3ZJwbJyp4xOVho9xIQCELsdZXOQWVFYjbrywznEc7-rGUSoZt9MF9r7AepIzMGb7-E4f4yFVn1V2YBhTzPdhu70kVSYY1UJTbZ7FREFCzeL3g9z4k2uJGk8pu3X4tOKdIHSuvCsr7uyWzrtXGw2g-NhCR_716yL64Pg9EFSbHQFg30aiGMnZ1Is1MQB1hnwl6IjI-6u_Ljjo0UQ1aku8awaePd0Ud0kuaVQYNE-sr-6wXm4Ubra2uyY1UzCEPUIBHz5EuMddiMBeZs9erlPi4LKV9pa7I3yuX-FSVUonMWTYeri4HNy7gc6aBdDgFHteFaeqiaD1pxJA7Zz4WRwci3lMstoFXW8fNmpFDc2ngY5fXS-Y5TspSjPBemCSauiMh8UT5ep8Zcm9vo1HSwBAL1vMSjtbBPSqkf7bJeuPs8-r1NpoAapoU3pG4rMO2l7KPq2d1mWIHqAdueMAtIEVnzfO3eTZRLpv-lb-jzLPITLcVrASUH9t2DL7WjO9cxhie7lsFADUT48pZuCl4lsjIf31xvvKgjk9vS7v2etUD_LP80C7bRHb1z-xBGBbmSuEJrDtIXtcLjTVQAj3J2g2xoBHWPh42hr4O4QECodL1Rq2vyAOXVpwUHLlnE0Q-8OFC08Ogc-sL3KNdWAP1Xatc-pX41Y1v_shZRJohgwR_eskjIXhu0WVNg0XlcPgDn2otAndD16kzcYfmOdeERjfTTLNOJw-H1uMeh1Rm-fNJCBDjO84q-JL1-dnFKMbuYUR1aXGwqrioE5DGM1AuLZ-n0vjH8YDgNygmw.hgZ7qkSQlo8KvN10x7wzDQ",
               }
+
+options:
+  summary: CORS support
+  tags:
+    - Auth
+  description: |
+    Enable CORS by returning correct headers
+  x-amazon-apigateway-integration:
+    type: mock
+    requestTemplates:
+      application/json: |
+        {
+          "statusCode" : 200
+        }
+    responses:
+      "default":
+        statusCode: "200"
+        responseParameters:
+          method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+          method.response.header.Access-Control-Allow-Methods: "'*'"
+          method.response.header.Access-Control-Allow-Origin: "'*'"
+        responseTemplates:
+          application/json: |
+            {}
+  responses:
+    200:
+      description: Default response for CORS method
+      headers:
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+        Access-Control-Allow-Methods:
+          schema:
+            type: string
+        Access-Control-Allow-Headers:
+          schema:
+            type: string

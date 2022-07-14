@@ -1,4 +1,5 @@
 import { APIGatewayEventRequestContext } from "aws-lambda";
+import FormData from "form-data";
 import middy from "middy";
 import { Response } from "../models/response";
 
@@ -33,10 +34,23 @@ export const run = async (event: SignInRequest) => {
       return new Response(HttpStatusCode.BadRequest, {
         message: "No valid code/target",
       });
-    return new Response(
-      HttpStatusCode.OK,
-      `https://sp-clothing-dev.auth.eu-west-1.amazoncognito.com/oauth2/token?code=${code}&redirect_uri=http://localhost:3000/3rd-party-signin&client_id=${process.env.cognito_client_id}&grant_type=authorization_code`
+
+    const formData = new FormData();
+    formData.append("code", code);
+    formData.append("client_id", process.env.cognito_client_id);
+    formData.append("redirect_uri", "http://localhost:3000/3rd-party-signin");
+    formData.append("grant_type", "authorization_code");
+
+    const res = await fetch(
+      "https://sp-clothing-dev.auth.eu-west-1.amazoncognito.com/oauth2/token",
+      {
+        method: "POST",
+        body: JSON.stringify(formData),
+      }
     );
+    const data = await res.json();
+    console.log(data);
+    return new Response(HttpStatusCode.OK, data);
   } catch (error) {
     console.log(error);
     return new Response(HttpStatusCode.InternalServerError);

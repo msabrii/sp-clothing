@@ -71,7 +71,7 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   supported_identity_providers = ["Google", "COGNITO"]
   allowed_oauth_flows = ["code", "implicit"]
   allowed_oauth_flows_user_pool_client = true
-  callback_urls = ["http://localhost:3000", "http://localhost:3000/3rd-party-signin"]
+  callback_urls = ["http://localhost:3000/3rd-party-signin"]
   logout_urls = ["http://localhost:3000"]
   allowed_oauth_scopes = ["email", "openid", "profile"]
   explicit_auth_flows = [
