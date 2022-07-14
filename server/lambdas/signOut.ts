@@ -23,10 +23,7 @@ export const deps = {
 
 export interface SignOutRequest {
   requestContext: APIGatewayEventRequestContext;
-  body: {
-    email: string;
-    password: string;
-  };
+  body: {};
 }
 
 export const run = async (event: SignOutRequest) => {
@@ -40,6 +37,8 @@ export const run = async (event: SignOutRequest) => {
       AwsCognitoClaim.Email
     );
 
+    console.log(cognitoEmail);
+
     if (!cognitoEmail)
       return new Response(HttpStatusCode.Unauthorized, "User not authorized");
 
@@ -48,8 +47,8 @@ export const run = async (event: SignOutRequest) => {
       Username: cognitoEmail,
       Pool: userPool,
     });
-
-    await new Promise(function (resolve, reject) {
+    console.log("test", cognitoEmail);
+    const data = await new Promise(function (resolve, reject) {
       cognitoUser.globalSignOut({
         onSuccess: (msg) => {
           console.log(msg);
@@ -61,11 +60,12 @@ export const run = async (event: SignOutRequest) => {
         },
       });
     });
+    console.log(data);
     return new Response(HttpStatusCode.OK, { signed_out: true });
   } catch (error) {
     console.log(error);
     return new Response(HttpStatusCode.InternalServerError, {
-      signed_out: true,
+      signed_out: false,
       message: error,
     });
   }

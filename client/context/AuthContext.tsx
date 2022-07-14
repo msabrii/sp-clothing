@@ -50,6 +50,7 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
 			const res = await api.signInWithCodePost({ code, target: 'client' });
 			// localStorage.removeItem('loginCode');
 			console.log(res);
+			setUser(res.data);
 			if (!res) return;
 			localStorage.setItem('accessToken', res.data.access_token);
 			localStorage.setItem('idToken', res.data.id_token);
@@ -72,11 +73,12 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
 	};
 
 	const signOut = async () => {
+		console.log('user', user);
 		await api.signOutPost(
 			{},
 			{
 				headers: {
-					Authorization: `Bearer ${user.AccessToken}`,
+					Authorization: `Bearer ${user.access_token}`,
 				},
 			}
 		);

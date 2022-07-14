@@ -12,7 +12,7 @@ export const PaymentsForm = () => {
 	const { user } = useContext(AuthContext);
 	const { cartItems } = useContext(CartContext);
 
-	const api = new DefaultApi(new Configuration({ apiKey: user && user.signInUserSession.idToken.jwtToken }));
+	const api = new DefaultApi(new Configuration({ apiKey: user && user.data.idToken.jwtToken }));
 	const CARD_OPTIONS = {
 		style: {
 			base: {
